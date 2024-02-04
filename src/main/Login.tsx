@@ -1,90 +1,55 @@
 import React from 'react';
-import {
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import {ScrollView, StatusBar, StyleSheet, Text, View} from 'react-native';
 import Header from '../components/Header';
 import Logo from '../assets/svg/login.svg';
+import LoginButton from '../components/login/LoginButton';
+import Footer from '../components/Footer';
+import LoginField from '../components/login/LoginField';
 
-const Login = () => {
+interface Login {
+  navigation: any;
+}
+
+const Login = ({navigation}: Login) => {
+  const handleLogin = () => {
+    console.log('Login');
+    console.log('Email:', email);
+    console.log('Password:', password);
+  };
+  const handleRegister = () => {
+    console.log('Register');
+  };
+
+  const handleForgot = () => {
+    navigation.navigate('ForgotPassword');
+  };
+
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+
   return (
     <>
       <ScrollView style={styles.container}>
+        <StatusBar barStyle="dark-content" backgroundColor={'white'} />
         <Header title="Login" />
         <View style={styles.svgContainer}>
           <Logo width={300} height={300} />
         </View>
         <View style={styles.loginFieldContainer}>
           <Text style={styles.loginTitle}>Welcome Back!</Text>
-          <View>
-            <TextInput
-              style={{
-                borderWidth: 2,
-                borderColor: '#EEEDEB',
-                padding: 10,
-                borderRadius: 5,
-                marginVertical: 5,
-              }}
-              placeholder="Email"
-            />
-            <TextInput
-              style={{
-                borderWidth: 2,
-                borderColor: '#EEEDEB',
-                padding: 10,
-                borderRadius: 5,
-                marginVertical: 5,
-              }}
-              placeholder="Password"
-              secureTextEntry={true}
-            />
-            <View>
-              <Text
-                style={{
-                  textAlign: 'right',
-                  color: '#AAC8A7',
-                  fontSize: 12,
-                }}>
-                Forgot Password?
-              </Text>
-            </View>
-          </View>
-          <View
-            style={{
-              alignSelf: 'center',
-              marginTop: 20,
-              padding: 15,
-              width: '100%',
-              backgroundColor: '#AAC8A7',
-              borderRadius: 15,
-            }}>
-            <Pressable>
-              <Text
-                style={{
-                  fontSize: 18,
-                  textAlign: 'center',
-                  fontWeight: '600',
-                  color: 'white',
-                }}>
-                Login
-              </Text>
-            </Pressable>
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              marginTop: 20,
-            }}>
-            <Text style={{color: '#6F7789'}}>Belum punya akun?</Text>
-            <Pressable>
-              <Text style={{color: '#AAC8A7', marginLeft: 5}}>Register</Text>
-            </Pressable>
-          </View>
+          <LoginField
+            onPress={handleForgot}
+            emailValue={email}
+            passwordValue={password}
+            onChangeTextEmail={setEmail}
+            onChangeTextPassword={setPassword}
+          />
+          <LoginButton onPress={handleLogin} />
+          <Footer
+            title="Belum punya akun?"
+            subTitle="Register"
+            onPress={handleRegister}
+          />
         </View>
       </ScrollView>
     </>
