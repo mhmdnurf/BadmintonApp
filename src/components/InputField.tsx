@@ -2,10 +2,11 @@ import React from 'react';
 import {StyleSheet, TextInput} from 'react-native';
 
 interface InputField {
-  placeholder: string;
-  secureTextEntry: boolean;
+  placeholder?: string;
+  secureTextEntry?: boolean;
   value: string;
-  onChangeText: (text: string) => void;
+  onChangeText?: (text: string) => void;
+  editable?: boolean;
 }
 
 const InputField = ({
@@ -13,6 +14,7 @@ const InputField = ({
   secureTextEntry,
   value,
   onChangeText,
+  editable,
 }: InputField) => {
   return (
     <>
@@ -22,6 +24,7 @@ const InputField = ({
         secureTextEntry={secureTextEntry}
         value={value}
         onChangeText={onChangeText}
+        editable={editable}
       />
     </>
   );
