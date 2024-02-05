@@ -31,7 +31,7 @@ export default InputField;
 
 const styles = StyleSheet.create({
   inputField: {
-    borderWidth: 2,
+    borderWidth: 3,
     borderColor: '#EEEDEB',
     padding: 10,
     borderRadius: 5,

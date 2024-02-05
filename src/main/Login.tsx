@@ -1,10 +1,11 @@
 import React from 'react';
-import {ScrollView, StatusBar, StyleSheet, Text, View} from 'react-native';
+import {StatusBar, StyleSheet, Text, View} from 'react-native';
 import Header from '../components/Header';
 import Logo from '../assets/svg/login.svg';
 import LoginButton from '../components/login/LoginButton';
 import Footer from '../components/Footer';
 import LoginField from '../components/login/LoginField';
+import RootContainer from '../components/RootContainer';
 
 interface Login {
   navigation: any;
@@ -15,9 +16,10 @@ const Login = ({navigation}: Login) => {
     console.log('Login');
     console.log('Email:', email);
     console.log('Password:', password);
+    navigation.navigate('Home');
   };
   const handleRegister = () => {
-    console.log('Register');
+    navigation.navigate('Register');
   };
 
   const handleForgot = () => {
@@ -29,7 +31,7 @@ const Login = ({navigation}: Login) => {
 
   return (
     <>
-      <ScrollView style={styles.container}>
+      <RootContainer backgroundColor="white">
         <StatusBar barStyle="dark-content" backgroundColor={'white'} />
         <Header title="Login" />
         <View style={styles.svgContainer}>
@@ -51,7 +53,7 @@ const Login = ({navigation}: Login) => {
             onPress={handleRegister}
           />
         </View>
-      </ScrollView>
+      </RootContainer>
     </>
   );
 };
