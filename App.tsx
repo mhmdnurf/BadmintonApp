@@ -9,6 +9,8 @@ import Home from './src/main/Home';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Profile from './src/main/Profile';
+import MenuJadwal from './src/main/MenuJadwal';
+import RiwayatPemesanan from './src/main/RiwayatPemesanan';
 import Jadwal from './src/main/Jadwal';
 
 const Stack = createStackNavigator();
@@ -44,8 +46,8 @@ const MainTabs = () => {
           }}
         />
         <Tab.Screen
-          name="Jadwal"
-          component={Jadwal}
+          name="MenuJadwal"
+          component={MenuJadwal}
           options={{
             tabBarIcon: ({color, size}) => (
               <Icon name="calendar-clock-outline" color={color} size={size} />
@@ -101,6 +103,24 @@ export default function App() {
             name="Home"
             component={MainTabs}
             options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="RiwayatPemesanan"
+            component={RiwayatPemesanan}
+            options={{
+              title: '',
+              headerShown: true,
+              headerTintColor: '#AAC8A7',
+            }}
+          />
+          <Stack.Screen
+            name="Jadwal"
+            component={Jadwal}
+            options={{
+              title: '',
+              headerShown: true,
+              headerTintColor: '#AAC8A7',
+            }}
           />
         </Stack.Navigator>
       </NavigationContainer>

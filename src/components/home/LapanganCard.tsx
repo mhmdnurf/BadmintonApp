@@ -4,17 +4,23 @@ import {Image, StyleSheet, Text, View} from 'react-native';
 interface LapanganCard {
   namaGOR: string;
   jumlahLapangan: number;
+  width?: number;
+  marginLeft?: number;
+  imageSource: any;
 }
 
-const LapanganCard = ({namaGOR, jumlahLapangan}: LapanganCard) => {
+const LapanganCard = ({
+  namaGOR,
+  jumlahLapangan,
+  width = 300,
+  marginLeft = 10,
+  imageSource,
+}: LapanganCard) => {
   return (
     <View style={styles.container}>
-      <View style={styles.cardContainer}>
+      <View style={[styles.cardContainer, {width}, {marginLeft}]}>
         <View style={styles.imageContainer}>
-          <Image
-            source={require('../../assets/img/lapangan_1.jpg')}
-            style={styles.imageSize}
-          />
+          <Image source={imageSource} style={styles.imageSize} />
         </View>
         <View style={styles.infoContainer}>
           <Text style={styles.infoTitle}>{namaGOR}</Text>
@@ -35,11 +41,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 18,
     marginTop: 15,
-    marginLeft: 10,
     height: 200,
     borderWidth: 3,
     borderColor: '#EEEDEB',
-    width: 300,
     elevation: 1,
   },
   infoContainer: {
@@ -55,6 +59,6 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     resizeMode: 'cover',
   },
-  infoTitle: {fontSize: 18, color: '#474F7A', fontWeight: '600'},
-  infoJumlah: {fontSize: 16, color: '#474F7A'},
+  infoTitle: {fontSize: 18, color: '#6F7789', fontWeight: '600'},
+  infoJumlah: {fontSize: 16, color: '#6F7789'},
 });

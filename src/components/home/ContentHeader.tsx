@@ -20,11 +20,10 @@ export default ContentHeader;
 const styles = StyleSheet.create({
   titleContainer: {
     marginHorizontal: 20,
-    marginTop: 20,
   },
   title: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: '600',
-    color: '#474F7A',
+    color: '#6F7789',
   },
 });

@@ -10,7 +10,7 @@ const RiwayatButton = ({onPress}: RiwayatButton) => {
     <>
       <View style={styles.container}>
         <Pressable style={styles.btnContainer} onPress={onPress}>
-          <Text style={styles.btnText}>Riwayat Pembayaran</Text>
+          <Text style={styles.btnText}>Riwayat Pemesanan</Text>
         </Pressable>
       </View>
     </>

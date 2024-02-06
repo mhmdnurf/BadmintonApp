@@ -7,9 +7,13 @@ import ProfileField from '../components/profile/ProfileField';
 import RiwayatButton from '../components/profile/RiwayatButton';
 import LogoutButton from '../components/profile/LogoutButton';
 
-const Profile = () => {
+interface Profile {
+  navigation: any;
+}
+
+const Profile = ({navigation}: Profile) => {
   const handleNavigateRiwayat = () => {
-    console.log('Riwayat');
+    navigation.navigate('RiwayatPemesanan');
   };
   const handleLogout = () => {
     console.log('Logout');

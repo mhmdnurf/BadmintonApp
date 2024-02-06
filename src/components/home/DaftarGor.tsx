@@ -3,22 +3,28 @@ import {FlatList} from 'react-native';
 import ContentHeader from './ContentHeader';
 import LapanganCard from './LapanganCard';
 
-const data = [
-  {id: '1', namaGOR: 'GOR Chans', jumlahLapangan: 5},
-  {id: '2', namaGOR: 'GOR Mahakam', jumlahLapangan: 3},
-  {id: '3', namaGOR: 'GOR Rawasari', jumlahLapangan: 4},
-];
+interface GorData {
+  id: string;
+  namaGOR: string;
+  jumlahLapangan: number;
+  imageSource: any;
+}
 
-const DaftarGor = () => {
+interface DaftarGor {
+  data: GorData[];
+}
+
+const DaftarGor = ({data}: DaftarGor) => {
   return (
     <>
       {/* Lapangan Start */}
-      <ContentHeader title="Daftar GOR" />
+      <ContentHeader title="Daftar Gelanggang Olahraga" />
       <FlatList
         data={data}
         showsHorizontalScrollIndicator={false}
         renderItem={({item}) => (
           <LapanganCard
+            imageSource={item.imageSource}
             namaGOR={item.namaGOR}
             jumlahLapangan={item.jumlahLapangan}
           />

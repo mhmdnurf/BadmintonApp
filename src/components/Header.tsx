@@ -3,12 +3,13 @@ import {StyleSheet, Text, View} from 'react-native';
 
 interface Header {
   title: string;
+  marginBottom?: number;
 }
 
-const Header = ({title}: Header) => {
+const Header = ({title, marginBottom = 0}: Header) => {
   return (
     <>
-      <View style={styles.headerContainer}>
+      <View style={[styles.headerContainer, {marginBottom}]}>
         <Text style={styles.headerTitle}>{title}</Text>
       </View>
     </>
