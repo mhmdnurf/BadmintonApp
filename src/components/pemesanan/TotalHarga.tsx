@@ -3,13 +3,14 @@ import {StyleSheet, Text, View} from 'react-native';
 
 interface TotalHarga {
   harga: number;
+  label: string;
 }
 
-const TotalHarga = ({harga}: TotalHarga) => {
+const TotalHarga = ({harga, label}: TotalHarga) => {
   return (
     <>
       <View style={styles.container}>
-        <Text style={styles.label}>Total Pembayaran</Text>
+        <Text style={styles.label}>{label}</Text>
         <View style={styles.hargaContainer}>
           <Text style={styles.hargaText}>Rp.{harga}</Text>
         </View>

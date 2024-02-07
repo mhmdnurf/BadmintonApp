@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, StatusBar} from 'react-native';
 import Logo from '../assets/svg/splash_screen.svg';
 
 interface SplashScreen {
@@ -14,13 +14,16 @@ const SplashScreen = ({navigation}: SplashScreen) => {
     }, 3000);
   }, [navigation]);
   return (
-    <View style={styles.container}>
-      <Logo width={300} height={300} />
-      <Text style={styles.title}>Badminton Booking App</Text>
-      <View style={styles.subTitleContainer}>
-        <Text style={styles.subTitle}>Gelanggan Olahraga Badminton</Text>
+    <>
+      <StatusBar barStyle="light-content" backgroundColor="#AAC8A7" />
+      <View style={styles.container}>
+        <Logo width={300} height={300} />
+        <Text style={styles.title}>Badminton Booking App</Text>
+        <View style={styles.subTitleContainer}>
+          <Text style={styles.subTitle}>Gelanggan Olahraga Badminton</Text>
+        </View>
       </View>
-    </View>
+    </>
   );
 };
 

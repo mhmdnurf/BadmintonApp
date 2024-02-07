@@ -6,6 +6,7 @@ import LoginButton from '../components/login/LoginButton';
 import Footer from '../components/Footer';
 import LoginField from '../components/login/LoginField';
 import RootContainer from '../components/RootContainer';
+import BottomSpace from '../components/BottomSpace';
 
 interface Login {
   navigation: any;
@@ -53,6 +54,7 @@ const Login = ({navigation}: Login) => {
             onPress={handleRegister}
           />
         </View>
+        <BottomSpace marginBottom={40} />
       </RootContainer>
     </>
   );

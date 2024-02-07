@@ -35,7 +35,7 @@ const PemesananLapangan = ({route, navigation}: PemesananLapangan) => {
           bookingValue={waktuBooking}
           tanggalValue={tanggalPemesanan}
         />
-        <TotalHarga harga={60000} />
+        <TotalHarga harga={60000} label="Total Pembayaran" />
         <ConfirmButton onPress={handleSubmit} />
         <BottomSpace marginBottom={20} />
       </RootContainer>
