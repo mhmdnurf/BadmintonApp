@@ -36,7 +36,7 @@ const PemesananLapangan = ({route, navigation}: PemesananLapangan) => {
           tanggalValue={tanggalPemesanan}
         />
         <TotalHarga harga={60000} label="Total Pembayaran" />
-        <ConfirmButton onPress={handleSubmit} />
+        <ConfirmButton title="Konfirmasi Pemesanan" onPress={handleSubmit} />
         <BottomSpace marginBottom={20} />
       </RootContainer>
     </>

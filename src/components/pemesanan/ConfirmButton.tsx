@@ -3,15 +3,16 @@ import {Pressable, StyleSheet, Text, View} from 'react-native';
 
 interface ConfirmButton {
   onPress: () => void;
+  title: string;
 }
 
-const ConfirmButton = ({onPress}: ConfirmButton) => {
+const ConfirmButton = ({onPress, title}: ConfirmButton) => {
   return (
     <>
       <View style={styles.container}>
         <View style={styles.btnContainer}>
           <Pressable onPress={onPress}>
-            <Text style={styles.btnText}>Konfirmasi Pemesanan</Text>
+            <Text style={styles.btnText}>{title}</Text>
           </Pressable>
         </View>
       </View>
