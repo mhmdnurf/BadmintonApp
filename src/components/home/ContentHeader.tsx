@@ -3,12 +3,13 @@ import {StyleSheet, Text, View} from 'react-native';
 
 interface ContentHeader {
   title: string;
+  marginTop?: number;
 }
 
-const ContentHeader = ({title}: ContentHeader) => {
+const ContentHeader = ({title, marginTop}: ContentHeader) => {
   return (
     <>
-      <View style={styles.titleContainer}>
+      <View style={[styles.titleContainer, {marginTop}]}>
         <Text style={styles.title}>{title}</Text>
       </View>
     </>
