@@ -12,6 +12,8 @@ import Profile from './src/main/Profile';
 import MenuJadwal from './src/main/MenuJadwal';
 import RiwayatPemesanan from './src/main/RiwayatPemesanan';
 import Jadwal from './src/main/Jadwal';
+import PemesananLapangan from './src/main/PemesananLapangan';
+import Pembayaran from './src/main/Pembayaran';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -121,6 +123,20 @@ export default function App() {
               headerShown: true,
               headerTintColor: '#AAC8A7',
             }}
+          />
+          <Stack.Screen
+            name="PemesananLapangan"
+            component={PemesananLapangan}
+            options={{
+              title: '',
+              headerShown: true,
+              headerTintColor: '#AAC8A7',
+            }}
+          />
+          <Stack.Screen
+            name="Pembayaran"
+            component={Pembayaran}
+            options={{title: '', headerShown: true, headerTintColor: '#AAC8A7'}}
           />
         </Stack.Navigator>
       </NavigationContainer>

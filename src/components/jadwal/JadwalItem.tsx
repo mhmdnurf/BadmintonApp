@@ -1,12 +1,20 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Pressable, StyleSheet, Text} from 'react-native';
 
-const JadwalItem = ({title}: {title: string}) => {
+interface JadwalItem {
+  title: string;
+  isBooked: boolean;
+  onPress: () => void;
+}
+
+const JadwalItem = ({title, isBooked, onPress}: JadwalItem) => {
   return (
     <>
-      <View style={styles.container}>
+      <Pressable
+        onPress={onPress}
+        style={[styles.container, isBooked ? styles.booked : {}]}>
         <Text style={styles.title}>{title}</Text>
-      </View>
+      </Pressable>
     </>
   );
 };
@@ -23,6 +31,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexGrow: 1,
     marginHorizontal: 2,
+  },
+  booked: {
+    backgroundColor: 'grey',
   },
   title: {fontSize: 18, color: 'white', fontWeight: '600'},
 });

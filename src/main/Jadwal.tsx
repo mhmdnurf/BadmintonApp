@@ -12,8 +12,9 @@ import FlatContainer from '../components/FlatContainer';
 import Header from '../components/Header';
 import JadwalItem from '../components/jadwal/JadwalItem';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import BottomSpace from '../components/BottomSpace';
 
-interface JadwalProps {
+interface Jadwal {
   navigation: any;
   route: any;
 }
@@ -21,9 +22,10 @@ interface JadwalProps {
 interface Lapangan {
   title: string;
   data: string[];
+  bookedTimes: string[];
 }
 
-const Jadwal = ({route}: JadwalProps) => {
+const Jadwal = ({route, navigation}: Jadwal) => {
   const {itemId} = route.params;
   const [lapangan, setLapangan] = useState<Lapangan[]>([]);
   const [date, setDate] = useState(new Date());
@@ -43,6 +45,16 @@ const Jadwal = ({route}: JadwalProps) => {
     const data = {
       jumlahLapangan: 5,
       waktuBuka: '08.00 - 22.00',
+      booked: [
+        {
+          lapangan: 1,
+          waktu: ['08.00', '09.00', '10.00'],
+        },
+        {
+          lapangan: 3,
+          waktu: ['10.00', '11.00', '12.00'],
+        },
+      ],
     };
 
     const [startHour, endHour] = data.waktuBuka
@@ -54,12 +66,28 @@ const Jadwal = ({route}: JadwalProps) => {
     });
 
     setLapangan(
-      Array.from({length: data.jumlahLapangan}, (_, i) => ({
-        title: `Lapangan ${i + 1}`,
-        data: waktu,
-      })),
+      Array.from({length: data.jumlahLapangan}, (_, i) => {
+        const booking = data.booked.find(b => b.lapangan === i + 1);
+        return {
+          title: `Lapangan ${i + 1}`,
+          data: waktu,
+          bookedTimes: booking ? booking.waktu : [],
+        };
+      }),
     );
   }, []);
+
+  const handleNavigateToPemesanan = (time: string) => () => {
+    navigation.navigate('PemesananLapangan', {
+      waktuBooking: time,
+      tanggalPemesanan: date.toLocaleDateString('id-ID', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      }),
+    });
+  };
 
   return (
     <>
@@ -106,11 +134,21 @@ const Jadwal = ({route}: JadwalProps) => {
               <Text style={styles.titleContainer}>{lap.title}</Text>
               <View style={styles.itemContainer}>
                 {lap.data.map((item: string, innerIndex: number) => (
-                  <JadwalItem key={innerIndex} title={item} />
+                  <JadwalItem
+                    key={innerIndex}
+                    title={item}
+                    isBooked={lap.bookedTimes.includes(item)}
+                    onPress={
+                      lap.bookedTimes.includes(item)
+                        ? () => {}
+                        : handleNavigateToPemesanan(item)
+                    }
+                  />
                 ))}
               </View>
             </View>
           ))}
+          <BottomSpace marginBottom={40} />
         </ScrollView>
       </FlatContainer>
     </>
