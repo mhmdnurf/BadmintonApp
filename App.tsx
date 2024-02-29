@@ -15,6 +15,7 @@ import Jadwal from './src/screens/Jadwal';
 import PemesananLapangan from './src/screens/PemesananLapangan';
 import Pembayaran from './src/screens/Pembayaran';
 import DetailPemesanan from './src/screens/DetailPemesanan';
+import Member from './src/screens/Member';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -54,6 +55,16 @@ const MainTabs = () => {
           options={{
             tabBarIcon: ({color, size}) => (
               <Icon name="calendar-clock-outline" color={color} size={size} />
+            ),
+            headerShown: false,
+          }}
+        />
+        <Tab.Screen
+          name="Member"
+          component={Member}
+          options={{
+            tabBarIcon: ({color, size}) => (
+              <Icon name="badge-account-horizontal" color={color} size={size} />
             ),
             headerShown: false,
           }}
