@@ -14,6 +14,7 @@ import RiwayatPemesanan from './src/screens/RiwayatPemesanan';
 import Jadwal from './src/screens/Jadwal';
 import PemesananLapangan from './src/screens/PemesananLapangan';
 import Pembayaran from './src/screens/Pembayaran';
+import DetailPemesanan from './src/screens/DetailPemesanan';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -137,6 +138,15 @@ export default function App() {
             name="Pembayaran"
             component={Pembayaran}
             options={{title: '', headerShown: true, headerTintColor: '#AAC8A7'}}
+          />
+          <Stack.Screen
+            name="DetailPemesanan"
+            component={DetailPemesanan}
+            options={{
+              title: '',
+              headerShown: true,
+              headerTintColor: '#AAC8A7',
+            }}
           />
         </Stack.Navigator>
       </NavigationContainer>

@@ -1,5 +1,4 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
 import Header from '../components/Header';
 import DashboardHeader from '../components/home/DashboardHeader';
 import Waktu from '../components/home/Waktu';
@@ -14,7 +13,7 @@ interface Home {
 }
 
 const Home = ({navigation}: Home) => {
-  const data = [
+  const dataGOR = [
     {
       id: '1',
       namaGOR: 'GOR Chans',
@@ -34,6 +33,45 @@ const Home = ({navigation}: Home) => {
       imageSource: require('../assets/img/lapangan_3.jpg'),
     },
   ];
+
+  const dataTransaksi = [
+    {
+      id: '1',
+      date: 'Selasa, 12 Februari 2024',
+      nomorLapangan: 1,
+      gor: 'Chans',
+      time: '17.00 - 19.00',
+    },
+    {
+      id: '2',
+      date: 'Rabu, 13 Februari 2024',
+      nomorLapangan: 2,
+      gor: 'Mahakam',
+      time: '18.00 - 20.00',
+    },
+    {
+      id: '3',
+      date: 'Rabu, 13 Februari 2024',
+      nomorLapangan: 5,
+      gor: 'Mahakam',
+      time: '18.00 - 20.00',
+    },
+    {
+      id: '4',
+      date: 'Rabu, 13 Februari 2024',
+      nomorLapangan: 1,
+      gor: 'Mahakam',
+      time: '18.00 - 20.00',
+    },
+  ];
+
+  const handleNavigateDetailPemesanan = () => {
+    navigation.navigate('DetailPemesanan');
+  };
+
+  const handleNavigateAllPemesanan = () => {
+    navigation.navigate('RiwayatPemesanan');
+  };
   return (
     <>
       <RootContainer backgroundColor="white">
@@ -42,8 +80,12 @@ const Home = ({navigation}: Home) => {
           <DashboardHeader fullName="Pedry" />
           <Waktu />
         </HeaderContainer>
-        <DaftarGor data={data} />
-        <InformasiTransaksi />
+        <DaftarGor data={dataGOR} />
+        <InformasiTransaksi
+          data={dataTransaksi}
+          onPress={handleNavigateDetailPemesanan}
+          onPressShowAll={handleNavigateAllPemesanan}
+        />
         <BottomSpace marginBottom={100} />
       </RootContainer>
     </>

@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     marginLeft: 16,
     marginTop: 16,
   },
-  infoDate: {fontSize: 18, color: '#6F7789', fontWeight: '600'},
+  infoDate: {fontSize: 18, color: '#41444B', fontWeight: '600'},
   infoJumlah: {fontSize: 16, color: '#6F7789'},
   statusContainer: {
     display: 'flex',

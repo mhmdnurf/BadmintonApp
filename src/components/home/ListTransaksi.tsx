@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList} from 'react-native';
+import {FlatList, Pressable} from 'react-native';
 import TransaksiCard from './TransaksiCard';
 
 interface TransaksiData {
@@ -9,23 +9,25 @@ interface TransaksiData {
   gor: string;
   time: string;
 }
-
 interface ListTransaksi {
   data: TransaksiData[];
+  onPress: () => void;
 }
 
-const ListTransaksi = ({data}: ListTransaksi) => {
+const ListTransaksi = ({data, onPress}: ListTransaksi) => {
   return (
     <>
       <FlatList
         data={data}
         renderItem={({item}) => (
-          <TransaksiCard
-            date={item.date}
-            nomorLapangan={item.nomorLapangan}
-            gor={item.gor}
-            time={item.time}
-          />
+          <Pressable onPress={onPress}>
+            <TransaksiCard
+              date={item.date}
+              nomorLapangan={item.nomorLapangan}
+              gor={item.gor}
+              time={item.time}
+            />
+          </Pressable>
         )}
         keyExtractor={item => item.id}
         horizontal={true}

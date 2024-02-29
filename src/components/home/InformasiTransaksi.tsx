@@ -1,44 +1,52 @@
 import React from 'react';
 import ContentHeader from './ContentHeader';
 import ListTransaksi from './ListTransaksi';
+import {Pressable, StyleSheet, Text, View} from 'react-native';
 
-const InformasiTransaksi = () => {
-  const data = [
-    {
-      id: '1',
-      date: 'Selasa, 12 Februari 2024',
-      nomorLapangan: 1,
-      gor: 'Chans',
-      time: '17.00 - 19.00',
-    },
-    {
-      id: '2',
-      date: 'Rabu, 13 Februari 2024',
-      nomorLapangan: 2,
-      gor: 'Mahakam',
-      time: '18.00 - 20.00',
-    },
-    {
-      id: '3',
-      date: 'Rabu, 13 Februari 2024',
-      nomorLapangan: 5,
-      gor: 'Mahakam',
-      time: '18.00 - 20.00',
-    },
-    {
-      id: '4',
-      date: 'Rabu, 13 Februari 2024',
-      nomorLapangan: 1,
-      gor: 'Mahakam',
-      time: '18.00 - 20.00',
-    },
-  ];
+interface TransaksiData {
+  id: string;
+  date: string;
+  nomorLapangan: number;
+  gor: string;
+  time: string;
+}
+interface InformasiTransaksi {
+  data: TransaksiData[];
+  onPress: () => void;
+  onPressShowAll: () => void;
+}
+
+const InformasiTransaksi = ({
+  data,
+  onPress,
+  onPressShowAll,
+}: InformasiTransaksi) => {
   return (
     <>
-      <ContentHeader title="Informasi Pemesanan" marginTop={20} />
-      <ListTransaksi data={data} />
+      <View style={styles.container}>
+        <ContentHeader title="Informasi Pemesanan" />
+        <Pressable onPress={onPressShowAll}>
+          <Text style={styles.btnText}>Show all</Text>
+        </Pressable>
+      </View>
+      <ListTransaksi data={data} onPress={onPress} />
     </>
   );
 };
 
 export default InformasiTransaksi;
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  btnText: {
+    marginRight: 20,
+    fontSize: 16,
+    color: '#B7B7B7',
+    fontWeight: '600',
+  },
+});

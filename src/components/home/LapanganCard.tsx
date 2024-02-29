@@ -59,6 +59,6 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     resizeMode: 'cover',
   },
-  infoTitle: {fontSize: 18, color: '#6F7789', fontWeight: '600'},
+  infoTitle: {fontSize: 18, color: '#41444B', fontWeight: '600'},
   infoJumlah: {fontSize: 16, color: '#6F7789'},
 });
