@@ -1,17 +1,39 @@
 import React from 'react';
 import Header from '../components/Header';
-import RootContainer from '../components/RootContainer';
 import MemberField from '../components/member/MemberField';
-import MemberCard from '../components/member/MemberCard';
+import ListMember from '../components/member/ListMember';
+import FlatContainer from '../components/FlatContainer';
 
-const Member = () => {
+interface Member {
+  navigation: any;
+}
+
+const Member = ({navigation}: Member) => {
+  const data = [
+    {
+      id: '1',
+      namaGOR: 'GOR Chans',
+    },
+    {
+      id: '2',
+      namaGOR: 'GOR Mahakam',
+    },
+    {
+      id: '3',
+      namaGOR: 'GOR Abhimata',
+    },
+  ];
+
+  const handleNavigateDetailMember = () => {
+    navigation.navigate('DetailMember');
+  };
   return (
     <>
-      <RootContainer backgroundColor="white">
+      <FlatContainer backgroundColor="white">
         <Header title="Member" />
         <MemberField />
-        <MemberCard />
-      </RootContainer>
+        <ListMember data={data} onPress={handleNavigateDetailMember} />
+      </FlatContainer>
     </>
   );
 };

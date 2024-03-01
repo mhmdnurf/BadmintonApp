@@ -1,11 +1,11 @@
 import React from 'react';
 import {Dimensions, FlatList, Pressable, StyleSheet} from 'react-native';
-import LapanganCard from '../home/LapanganCard';
+import GORCard from '../home/GorCard';
 
 interface GorData {
   id: string;
   namaGOR: string;
-  jumlahLapangan: number;
+  alamatGOR: string;
   imageSource: any;
 }
 
@@ -23,12 +23,12 @@ const DaftarGor = ({data, onPress}: DaftarGor) => {
         showsHorizontalScrollIndicator={false}
         renderItem={({item}) => (
           <Pressable onPress={onPress(item.id)}>
-            <LapanganCard
+            <GORCard
               imageSource={item.imageSource}
               width={Dimensions.get('window').width - 40}
               marginLeft={0}
               namaGOR={item.namaGOR}
-              jumlahLapangan={item.jumlahLapangan}
+              alamatGOR={item.alamatGOR}
             />
           </Pressable>
         )}

@@ -2,7 +2,11 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const MemberCard = () => {
+interface MemberCard {
+  namaGOR: string;
+}
+
+const MemberCard = ({namaGOR}: MemberCard) => {
   return (
     <>
       <View style={styles.container}>
@@ -10,7 +14,7 @@ const MemberCard = () => {
           <View style={styles.icon}>
             <Icon name="badminton" size={30} color="#AAC8A7" />
           </View>
-          <Text>GOR Chans</Text>
+          <Text>{namaGOR}</Text>
         </View>
       </View>
     </>

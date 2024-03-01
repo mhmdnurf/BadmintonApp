@@ -16,6 +16,7 @@ import PemesananLapangan from './src/screens/PemesananLapangan';
 import Pembayaran from './src/screens/Pembayaran';
 import DetailPemesanan from './src/screens/DetailPemesanan';
 import Member from './src/screens/Member';
+import DetailMember from './src/screens/DetailMember';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -153,6 +154,15 @@ export default function App() {
           <Stack.Screen
             name="DetailPemesanan"
             component={DetailPemesanan}
+            options={{
+              title: '',
+              headerShown: true,
+              headerTintColor: '#AAC8A7',
+            }}
+          />
+          <Stack.Screen
+            name="DetailMember"
+            component={DetailMember}
             options={{
               title: '',
               headerShown: true,

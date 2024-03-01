@@ -1,5 +1,6 @@
 import React from 'react';
 import {Dimensions, StyleSheet, Text, View} from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 interface TransaksiCard {
   date: string;
@@ -19,6 +20,9 @@ const TransaksiCard = ({
   return (
     <View style={styles.container}>
       <View style={[styles.cardContainer, {width}]}>
+        <View style={styles.icon}>
+          <Icon name="react" size={30} color="#AAC8A7" />
+        </View>
         <View style={styles.infoContainer}>
           <Text style={styles.infoDate}>{date}</Text>
           <Text style={styles.infoJumlah}>
@@ -44,7 +48,7 @@ const styles = StyleSheet.create({
   cardContainer: {
     backgroundColor: 'white',
     borderRadius: 18,
-    marginTop: 15,
+    marginTop: 20,
     height: 200,
     borderWidth: 3,
     borderColor: '#EEEDEB',
@@ -70,4 +74,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   statusText: {color: 'white', fontSize: 16, fontWeight: '600'},
+  icon: {
+    position: 'absolute',
+    top: -20,
+    right: 20,
+    backgroundColor: 'white',
+    borderRadius: 50,
+    padding: 10,
+    elevation: 3,
+  },
 });

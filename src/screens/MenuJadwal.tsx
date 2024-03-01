@@ -13,19 +13,19 @@ const MenuJadwal = ({navigation}: MenuJadwal) => {
     {
       id: '1',
       namaGOR: 'GOR Chans',
-      jumlahLapangan: 5,
+      alamatGOR: 'Jl. Mahakam I No. 1',
       imageSource: require('../assets/img/lapangan_1.jpg'),
     },
     {
       id: '2',
       namaGOR: 'GOR Mahakam',
-      jumlahLapangan: 3,
+      alamatGOR: 'Jl. Mahakam I No. 2',
       imageSource: require('../assets/img/lapangan_2.jpg'),
     },
     {
       id: '3',
       namaGOR: 'GOR Rawasari',
-      jumlahLapangan: 4,
+      alamatGOR: 'Jl. Mahakam I No. 3',
       imageSource: require('../assets/img/lapangan_3.jpg'),
     },
   ];
