@@ -24,8 +24,8 @@ const styles = StyleSheet.create({
   },
   timeText: {
     fontSize: 18,
-    fontWeight: '600',
     color: 'white',
     textAlign: 'center',
+    fontFamily: 'Poppins SemiBold',
   },
 });

@@ -69,5 +69,5 @@ const styles = StyleSheet.create({
     bottom: 0,
     marginBottom: 20,
   },
-  statusText: {color: 'white', fontSize: 16, fontWeight: '600'},
+  statusText: {color: 'white', fontSize: 16},
 });

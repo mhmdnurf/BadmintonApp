@@ -58,8 +58,8 @@ const styles = StyleSheet.create({
     marginLeft: 16,
     marginTop: 16,
   },
-  infoDate: {fontSize: 18, color: '#41444B', fontWeight: '600'},
-  infoJumlah: {fontSize: 16, color: '#6F7789'},
+  infoDate: {fontSize: 18, color: '#41444B', fontFamily: 'Poppins SemiBold'},
+  infoJumlah: {fontSize: 16, color: '#6F7789', fontFamily: 'Poppins Regular'},
   statusContainer: {
     display: 'flex',
     justifyContent: 'center',
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     marginBottom: 20,
   },
-  statusText: {color: 'white', fontSize: 16, fontWeight: '600'},
+  statusText: {color: 'white', fontSize: 16, fontFamily: 'Poppins SemiBold'},
   icon: {
     position: 'absolute',
     top: -20,

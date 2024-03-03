@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 18,
     marginTop: 15,
-    height: 200,
+    height: 225,
     borderWidth: 3,
     borderColor: '#EEEDEB',
     elevation: 1,
@@ -59,6 +59,6 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     resizeMode: 'cover',
   },
-  infoTitle: {fontSize: 18, color: '#41444B', fontWeight: '600'},
-  infoJumlah: {fontSize: 16, color: '#6F7789'},
+  infoTitle: {fontSize: 18, color: '#41444B', fontFamily: 'Poppins SemiBold'},
+  infoJumlah: {fontSize: 16, color: '#6F7789', fontFamily: 'Poppins Regular'},
 });
