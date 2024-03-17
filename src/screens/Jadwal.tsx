@@ -15,6 +15,7 @@ import JadwalItem from '../components/jadwal/JadwalItem';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import BottomSpace from '../components/BottomSpace';
 import firestore from '@react-native-firebase/firestore';
+import {useIsFocused} from '@react-navigation/native';
 
 interface Jadwal {
   navigation: any;
@@ -29,11 +30,33 @@ interface Lapangan {
 
 const Jadwal = ({route, navigation}: Jadwal) => {
   const {itemId} = route.params;
+  const isFocused = useIsFocused();
   const [lapangan, setLapangan] = React.useState<Lapangan[]>([]);
   const [date, setDate] = React.useState(new Date());
   const [show, setShow] = React.useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
   const [dataLapangan, setDataLapangan] = React.useState({} as any);
+  const [booked, setBooked] = React.useState([] as any);
+
+  const fetchBooked = React.useCallback(async () => {
+    setRefreshing(true);
+    try {
+      const selectedDate = date.toISOString().split('T')[0];
+      const query = await firestore()
+        .collection('booking')
+        .where('gor_uid', '==', itemId)
+        .get();
+      const bookedData = query.docs
+        .map(doc => doc.data())
+        .filter(data => data.tanggalPemesanan.split('T')[0] === selectedDate);
+      setBooked(bookedData);
+      console.log('Booked data: ', bookedData);
+    } catch (error) {
+      console.log('Error fetching data: ', error);
+    } finally {
+      setRefreshing(false);
+    }
+  }, [itemId, date]);
 
   const fetchJadwal = React.useCallback(async () => {
     try {
@@ -45,14 +68,20 @@ const Jadwal = ({route, navigation}: Jadwal) => {
         jumlahLapangan: lapanganData?.jumlahLapangan,
         namaGOR: lapanganData?.namaGOR,
         waktuBuka: `${lapanganData?.waktuBuka} - ${lapanganData?.waktuTutup}`,
-        booked: [{}],
+        hargaLapangan: lapanganData?.hargaLapangan,
+        booked: booked.map(
+          (item: {lapangan: string; waktu: Array<string>}) => ({
+            lapangan: parseInt(item.lapangan, 10),
+            waktu: JSON.stringify(item.waktu),
+          }),
+        ),
       });
     } catch (error) {
       console.log('Error fetching data: ', error);
     } finally {
       setRefreshing(false);
     }
-  }, [itemId]);
+  }, [itemId, booked]);
 
   const onChange = (event: any, selectedDate: any) => {
     const currentDate = selectedDate || date;
@@ -65,8 +94,16 @@ const Jadwal = ({route, navigation}: Jadwal) => {
   };
 
   React.useEffect(() => {
-    fetchJadwal();
-  }, [fetchJadwal]);
+    if (isFocused) {
+      fetchBooked();
+    }
+  }, [fetchBooked, isFocused]);
+
+  React.useEffect(() => {
+    if (isFocused) {
+      fetchJadwal();
+    }
+  }, [fetchJadwal, isFocused]);
 
   React.useEffect(() => {
     if (dataLapangan?.waktuBuka) {
@@ -95,20 +132,20 @@ const Jadwal = ({route, navigation}: Jadwal) => {
     }
   }, [dataLapangan]);
 
+  const handleRefresh = () => {
+    setRefreshing(true);
+    fetchJadwal();
+    fetchBooked();
+  };
+
   const handleNavigateToPemesanan = (time: string, title: string) => () => {
     navigation.navigate('PemesananLapangan', {
       waktuBooking: time,
       lapangan: title,
       dataLapangan: dataLapangan,
-      tanggalPemesanan: date.toLocaleDateString('id-ID', {
-        weekday: 'long',
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric',
-      }),
+      tanggalPemesanan: new Date(date.getTime()).toISOString(),
     });
   };
-
   return (
     <>
       <FlatContainer backgroundColor="white">
@@ -150,7 +187,7 @@ const Jadwal = ({route, navigation}: Jadwal) => {
           style={styles.container}
           showsVerticalScrollIndicator={false}
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={fetchJadwal} />
+            <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
           }>
           {lapangan.map((lap: Lapangan, index: number) => (
             <View key={index}>

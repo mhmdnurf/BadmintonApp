@@ -1,20 +1,38 @@
 import React from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 
 interface ConfirmButton {
   onPress: () => void;
   title: string;
+  isLoading: boolean;
 }
 
-const ConfirmButton = ({onPress, title}: ConfirmButton) => {
+const ConfirmButton = ({onPress, title, isLoading}: ConfirmButton) => {
   return (
     <>
       <View style={styles.container}>
-        <View style={styles.btnContainer}>
-          <Pressable onPress={onPress}>
+        <Pressable
+          onPress={onPress}
+          style={({pressed}) => [
+            {
+              backgroundColor: pressed ? '#8C9B8E' : '#AAC8A7',
+              borderWidth: pressed ? 3 : 0,
+              borderColor: pressed ? '#8C9B8E' : '#AAC8A7',
+            },
+            styles.btnContainer,
+          ]}>
+          {isLoading ? (
+            <ActivityIndicator size={25} color="white" />
+          ) : (
             <Text style={styles.btnText}>{title}</Text>
-          </Pressable>
-        </View>
+          )}
+        </Pressable>
       </View>
     </>
   );
