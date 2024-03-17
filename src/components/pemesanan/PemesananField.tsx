@@ -8,6 +8,8 @@ interface PemesananField {
   onValueChange: (itemValue: string, itemIndex: number) => void;
   bookingValue: string;
   tanggalValue: string;
+  lapanganValue: string;
+  lokasiValue: string;
 }
 
 const PemesananField = ({
@@ -15,6 +17,8 @@ const PemesananField = ({
   onValueChange,
   bookingValue,
   tanggalValue,
+  lapanganValue,
+  lokasiValue,
 }: PemesananField) => {
   return (
     <>
@@ -33,9 +37,9 @@ const PemesananField = ({
           </Picker>
         </View>
         <Text style={styles.label}>Lapangan</Text>
-        <InputField value="5" editable={false} />
+        <InputField value={lapanganValue} editable={false} />
         <Text style={styles.label}>Lokasi</Text>
-        <InputField value="GOR Mahakam" editable={false} />
+        <InputField value={lokasiValue} editable={false} />
       </View>
     </>
   );
@@ -47,6 +51,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     fontFamily: 'Poppins SemiBold',
+    color: '#4F4F4F',
   },
   inputContainer: {
     marginHorizontal: 20,

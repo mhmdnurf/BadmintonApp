@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -6,6 +6,7 @@ import {
   View,
   Platform,
   Pressable,
+  RefreshControl,
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import FlatContainer from '../components/FlatContainer';
@@ -13,6 +14,7 @@ import Header from '../components/Header';
 import JadwalItem from '../components/jadwal/JadwalItem';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import BottomSpace from '../components/BottomSpace';
+import firestore from '@react-native-firebase/firestore';
 
 interface Jadwal {
   navigation: any;
@@ -27,9 +29,30 @@ interface Lapangan {
 
 const Jadwal = ({route, navigation}: Jadwal) => {
   const {itemId} = route.params;
-  const [lapangan, setLapangan] = useState<Lapangan[]>([]);
-  const [date, setDate] = useState(new Date());
-  const [show, setShow] = useState(false);
+  const [lapangan, setLapangan] = React.useState<Lapangan[]>([]);
+  const [date, setDate] = React.useState(new Date());
+  const [show, setShow] = React.useState(false);
+  const [refreshing, setRefreshing] = React.useState(false);
+  const [dataLapangan, setDataLapangan] = React.useState({} as any);
+
+  const fetchJadwal = React.useCallback(async () => {
+    try {
+      setRefreshing(true);
+      const query = await firestore().collection('gor').doc(itemId).get();
+      const lapanganData = query.data();
+      setDataLapangan({
+        id: itemId,
+        jumlahLapangan: lapanganData?.jumlahLapangan,
+        namaGOR: lapanganData?.namaGOR,
+        waktuBuka: `${lapanganData?.waktuBuka} - ${lapanganData?.waktuTutup}`,
+        booked: [{}],
+      });
+    } catch (error) {
+      console.log('Error fetching data: ', error);
+    } finally {
+      setRefreshing(false);
+    }
+  }, [itemId]);
 
   const onChange = (event: any, selectedDate: any) => {
     const currentDate = selectedDate || date;
@@ -41,45 +64,42 @@ const Jadwal = ({route, navigation}: Jadwal) => {
     setShow(true);
   };
 
-  useEffect(() => {
-    const data = {
-      jumlahLapangan: 5,
-      waktuBuka: '08.00 - 22.00',
-      booked: [
-        {
-          lapangan: 1,
-          waktu: ['08.00', '09.00', '10.00'],
-        },
-        {
-          lapangan: 3,
-          waktu: ['10.00', '11.00', '12.00'],
-        },
-      ],
-    };
+  React.useEffect(() => {
+    fetchJadwal();
+  }, [fetchJadwal]);
 
-    const [startHour, endHour] = data.waktuBuka
-      .split(' - ')
-      .map(time => parseInt(time.split('.')[0]));
-    const waktu = Array.from({length: endHour - startHour + 1}, (_, i) => {
-      const hour = startHour + i;
-      return `${hour < 10 ? '0' + hour : hour}.00`;
-    });
+  React.useEffect(() => {
+    if (dataLapangan?.waktuBuka) {
+      setRefreshing(false);
+      const [startHour, endHour] = dataLapangan?.waktuBuka
+        .split(' - ')
+        .map((time: string) => parseInt(time.split('.')[0], 10));
+      const waktu = Array.from({length: endHour - startHour + 1}, (_, i) => {
+        const hour = startHour + i;
+        return `${hour < 10 ? '0' + hour : hour}.00`;
+      });
+      setLapangan(
+        Array.from({length: dataLapangan.jumlahLapangan}, (_, i) => {
+          const booking = dataLapangan.booked.find(
+            (b: {lapangan: number}) => b.lapangan === i + 1,
+          );
+          return {
+            title: `Lapangan ${i + 1}`,
+            data: waktu,
+            bookedTimes: booking ? booking.waktu : [],
+          };
+        }),
+      );
+    } else {
+      setRefreshing(true);
+    }
+  }, [dataLapangan]);
 
-    setLapangan(
-      Array.from({length: data.jumlahLapangan}, (_, i) => {
-        const booking = data.booked.find(b => b.lapangan === i + 1);
-        return {
-          title: `Lapangan ${i + 1}`,
-          data: waktu,
-          bookedTimes: booking ? booking.waktu : [],
-        };
-      }),
-    );
-  }, []);
-
-  const handleNavigateToPemesanan = (time: string) => () => {
+  const handleNavigateToPemesanan = (time: string, title: string) => () => {
     navigation.navigate('PemesananLapangan', {
       waktuBooking: time,
+      lapangan: title,
+      dataLapangan: dataLapangan,
       tanggalPemesanan: date.toLocaleDateString('id-ID', {
         weekday: 'long',
         day: 'numeric',
@@ -92,9 +112,9 @@ const Jadwal = ({route, navigation}: Jadwal) => {
   return (
     <>
       <FlatContainer backgroundColor="white">
-        <Header title={`Jadwal Lapangan ${itemId}`} />
+        <Header title="Jadwal Lapangan" />
         <View style={styles.dateContainer}>
-          <Text style={styles.dateTitle}>Pilih Tanggal</Text>
+          <Text style={styles.dateTitle}>Tanggal</Text>
           <Pressable style={styles.btnPicker} onPress={showDatepicker}>
             <View style={styles.btnLabelContainer}>
               <Icon
@@ -128,7 +148,10 @@ const Jadwal = ({route, navigation}: Jadwal) => {
         </View>
         <ScrollView
           style={styles.container}
-          showsVerticalScrollIndicator={false}>
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={fetchJadwal} />
+          }>
           {lapangan.map((lap: Lapangan, index: number) => (
             <View key={index}>
               <Text style={styles.titleContainer}>{lap.title}</Text>
@@ -141,7 +164,7 @@ const Jadwal = ({route, navigation}: Jadwal) => {
                     onPress={
                       lap.bookedTimes.includes(item)
                         ? () => {}
-                        : handleNavigateToPemesanan(item)
+                        : handleNavigateToPemesanan(item, lap.title)
                     }
                   />
                 ))}

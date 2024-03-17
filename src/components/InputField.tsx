@@ -54,5 +54,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginVertical: 5,
     fontFamily: 'Poppins Regular',
+    color: '#4F4F4F',
   },
 });

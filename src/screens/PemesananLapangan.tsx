@@ -12,17 +12,21 @@ interface PemesananLapangan {
 }
 
 const PemesananLapangan = ({route, navigation}: PemesananLapangan) => {
-  const {waktuBooking, tanggalPemesanan} = route.params;
+  const {waktuBooking, tanggalPemesanan, dataLapangan, lapangan} = route.params;
 
   const [lamaBermain, setLamaBermain] = React.useState('2 Jam');
 
+  const lapanganNumber = lapangan.split(' ')[1];
+
   const handleSubmit = () => {
     console.log({
-      lamaBermain,
-      waktuBooking,
-      tanggalPemesanan,
+      // lamaBermain,
+      // waktuBooking,
+      // tanggalPemesanan,
+      // lapangan: lapanganNumber,
+      dataLapangan,
     });
-    navigation.navigate('Pembayaran');
+    // navigation.navigate('Pembayaran');
   };
 
   return (
@@ -34,6 +38,8 @@ const PemesananLapangan = ({route, navigation}: PemesananLapangan) => {
           onValueChange={itemValue => setLamaBermain(itemValue)}
           bookingValue={waktuBooking}
           tanggalValue={tanggalPemesanan}
+          lapanganValue={lapanganNumber}
+          lokasiValue={dataLapangan.namaGOR}
         />
         <TotalHarga harga={60000} label="Total Pembayaran" />
         <ConfirmButton title="Konfirmasi Pemesanan" onPress={handleSubmit} />
