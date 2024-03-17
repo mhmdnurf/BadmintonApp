@@ -6,6 +6,8 @@ import RegisterButton from '../components/register/RegisterButton';
 import Footer from '../components/Footer';
 import BottomSpace from '../components/BottomSpace';
 import RootContainer from '../components/RootContainer';
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
 interface Register {
   navigation: any;
@@ -16,23 +18,40 @@ const Register = ({navigation}: Register) => {
   const [nik, setNik] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const [selectedGender, setSelectedGender] = React.useState('Laki - Laki');
+  const [selectedGender, setSelectedGender] = React.useState('');
   const [nomor, setNomor] = React.useState('');
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const handleNavigateLogin = () => {
     navigation.navigate('Login');
   };
 
-  const handleSubmit = () => {
-    const data = {
-      fullName,
-      nik,
-      email,
-      password,
-      selectedGender,
-      nomor,
-    };
-    console.log(data);
+  const handleSubmit = async () => {
+    try {
+      setIsLoading(true);
+      const userCredential = await auth().createUserWithEmailAndPassword(
+        email,
+        password,
+      );
+      const user = userCredential.user;
+      firestore().collection('users').doc(user?.uid).set({
+        namaLengkap: fullName,
+        NIK: nik,
+        email: email,
+        jenisKelamin: selectedGender,
+        nomor: nomor,
+        user_uid: user?.uid,
+        role: 'customer',
+        fotoUser:
+          'https://firebasestorage.googleapis.com/v0/b/badminton-app-dev.appspot.com/o/undraw_Drink_coffee_v3au.png?alt=media&token=e41995e8-a492-4178-89f8-d5a4eaae0103',
+      });
+      console.log('User account created & signed in!');
+    } catch (error) {
+      console.log(error);
+    } finally {
+      navigation.navigate('Login');
+      setIsLoading(false);
+    }
   };
   return (
     <>
@@ -54,7 +73,7 @@ const Register = ({navigation}: Register) => {
             nomorValue={nomor}
             onChangeTextNomor={setNomor}
           />
-          <RegisterButton onPress={handleSubmit} />
+          <RegisterButton onPress={handleSubmit} isLoading={isLoading} />
           <Footer
             title="Sudah punya akun?"
             subTitle="Login"

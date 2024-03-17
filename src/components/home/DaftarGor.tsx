@@ -7,7 +7,7 @@ interface GorData {
   id: string;
   namaGOR: string;
   jumlahLapangan: number;
-  imageSource: any;
+  fotoGOR: string;
 }
 
 interface DaftarGor {
@@ -17,14 +17,13 @@ interface DaftarGor {
 const DaftarGor = ({data}: DaftarGor) => {
   return (
     <>
-      {/* Lapangan Start */}
       <ContentHeader title="Daftar Gelanggang Olahraga" />
       <FlatList
         data={data}
         showsHorizontalScrollIndicator={false}
         renderItem={({item}) => (
           <LapanganCard
-            imageSource={item.imageSource}
+            uri={item.fotoGOR}
             namaGOR={item.namaGOR}
             jumlahLapangan={item.jumlahLapangan}
           />
@@ -32,7 +31,6 @@ const DaftarGor = ({data}: DaftarGor) => {
         keyExtractor={item => item.id}
         horizontal={true}
       />
-      {/* Lapangan End */}
     </>
   );
 };

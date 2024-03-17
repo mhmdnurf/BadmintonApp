@@ -1,18 +1,30 @@
 import React from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {ActivityIndicator, Pressable, StyleSheet, Text} from 'react-native';
 
 interface RegisterButton {
   onPress: () => void;
+  isLoading: boolean;
 }
 
-const RegisterButton = ({onPress}: RegisterButton) => {
+const RegisterButton = ({onPress, isLoading}: RegisterButton) => {
   return (
     <>
-      <View style={styles.btnContainer}>
-        <Pressable onPress={onPress}>
+      <Pressable
+        onPress={onPress}
+        style={({pressed}) => [
+          {
+            backgroundColor: pressed ? '#8C9B8E' : '#AAC8A7',
+            borderWidth: pressed ? 3 : 0,
+            borderColor: pressed ? '#8C9B8E' : '#AAC8A7',
+          },
+          styles.btnContainer,
+        ]}>
+        {isLoading ? (
+          <ActivityIndicator size={25} color="white" />
+        ) : (
           <Text style={styles.btnText}>Register</Text>
-        </Pressable>
-      </View>
+        )}
+      </Pressable>
     </>
   );
 };

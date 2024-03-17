@@ -5,8 +5,8 @@ import GORCard from '../home/GorCard';
 interface GorData {
   id: string;
   namaGOR: string;
-  alamatGOR: string;
-  imageSource: any;
+  alamat: string;
+  fotoGOR: string;
 }
 
 interface DaftarGor {
@@ -24,11 +24,11 @@ const DaftarGor = ({data, onPress}: DaftarGor) => {
         renderItem={({item}) => (
           <Pressable onPress={onPress(item.id)}>
             <GORCard
-              imageSource={item.imageSource}
+              uri={item.fotoGOR}
               width={Dimensions.get('window').width - 40}
               marginLeft={0}
               namaGOR={item.namaGOR}
-              alamatGOR={item.alamatGOR}
+              alamatGOR={item.alamat}
             />
           </Pressable>
         )}

@@ -1,17 +1,30 @@
 import React from 'react';
-import {ScrollView, StyleSheet} from 'react-native';
+import {RefreshControl, ScrollView, StatusBar, StyleSheet} from 'react-native';
 
 interface RootContainer {
   children: React.ReactElement | React.ReactElement[];
   backgroundColor: string;
+  refreshing?: boolean;
+  onRefresh?: () => void;
 }
 
-const RootContainer = ({children, backgroundColor}: RootContainer) => {
+const RootContainer = ({
+  children,
+  backgroundColor,
+  refreshing,
+  onRefresh,
+}: RootContainer) => {
   return (
     <>
+      <StatusBar barStyle="dark-content" backgroundColor={backgroundColor} />
       <ScrollView
         style={[styles.container, {backgroundColor}]}
-        showsVerticalScrollIndicator={false}>
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          refreshing !== undefined && onRefresh !== undefined ? (
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          ) : undefined
+        }>
         {children}
       </ScrollView>
     </>

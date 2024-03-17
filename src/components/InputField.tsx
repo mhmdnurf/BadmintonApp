@@ -8,6 +8,14 @@ interface InputField {
   onChangeText?: (text: string) => void;
   editable?: boolean;
   marginBottom?: number;
+  maxLength?: number;
+  keyboardType?:
+    | 'default'
+    | 'number-pad'
+    | 'decimal-pad'
+    | 'numeric'
+    | 'email-address'
+    | 'phone-pad';
 }
 
 const InputField = ({
@@ -17,6 +25,8 @@ const InputField = ({
   onChangeText,
   editable,
   marginBottom,
+  maxLength,
+  keyboardType,
 }: InputField) => {
   return (
     <>
@@ -27,6 +37,8 @@ const InputField = ({
         value={value}
         onChangeText={onChangeText}
         editable={editable}
+        maxLength={maxLength}
+        keyboardType={keyboardType}
       />
     </>
   );
@@ -41,5 +53,6 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     marginVertical: 5,
+    fontFamily: 'Poppins Regular',
   },
 });

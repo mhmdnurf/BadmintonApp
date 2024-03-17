@@ -35,7 +35,7 @@ const RegisterField = ({
   return (
     <>
       <InputField
-        placeholder="Full Name"
+        placeholder="Nama Lengkap"
         secureTextEntry={false}
         value={nameValue}
         onChangeText={onChangeTextName}
@@ -45,9 +45,12 @@ const RegisterField = ({
         secureTextEntry={false}
         value={nikValue}
         onChangeText={onChangeTextNIK}
+        maxLength={16}
+        keyboardType="numeric"
       />
       <View style={styles.picker}>
         <Picker selectedValue={selectedValue} onValueChange={onValueChange}>
+          <Picker.Item label="Jenis Kelamin" value="" />
           <Picker.Item label="Laki - Laki" value="Laki - Laki" />
           <Picker.Item label="Perempuan" value="Perempuan" />
         </Picker>
@@ -57,6 +60,7 @@ const RegisterField = ({
         secureTextEntry={false}
         value={emailValue}
         onChangeText={onChangeTextEmail}
+        keyboardType="email-address"
       />
       <InputField
         placeholder="Password"
@@ -69,6 +73,7 @@ const RegisterField = ({
         secureTextEntry={false}
         value={nomorValue}
         onChangeText={onChangeTextNomor}
+        keyboardType="numeric"
       />
     </>
   );

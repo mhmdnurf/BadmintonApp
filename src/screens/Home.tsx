@@ -7,32 +7,75 @@ import HeaderContainer from '../components/home/HeaderContainer';
 import RootContainer from '../components/RootContainer';
 import InformasiTransaksi from '../components/home/InformasiTransaksi';
 import BottomSpace from '../components/BottomSpace';
-
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 interface Home {
   navigation: any;
 }
 
 const Home = ({navigation}: Home) => {
-  const dataGOR = [
-    {
-      id: '1',
-      namaGOR: 'GOR Chans',
-      jumlahLapangan: 5,
-      imageSource: require('../assets/img/lapangan_1.jpg'),
-    },
-    {
-      id: '2',
-      namaGOR: 'GOR Mahakam',
-      jumlahLapangan: 3,
-      imageSource: require('../assets/img/lapangan_2.jpg'),
-    },
-    {
-      id: '3',
-      namaGOR: 'GOR Rawasari',
-      jumlahLapangan: 4,
-      imageSource: require('../assets/img/lapangan_3.jpg'),
-    },
-  ];
+  const [fullName, setFullName] = React.useState('');
+  const [refreshing, setRefreshing] = React.useState(false);
+  const [dataGOR, setDataGOR] = React.useState([] as any);
+  const fetchUser = React.useCallback(async () => {
+    try {
+      setRefreshing(true);
+      const user = auth().currentUser;
+      const userDoc = firestore().collection('users').doc(user?.uid);
+      const docSnapshot = await userDoc.get();
+      if (docSnapshot.exists) {
+        const userData = docSnapshot.data();
+        setFullName(userData?.namaLengkap);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setRefreshing(false);
+    }
+  }, []);
+
+  const fetchGOR = React.useCallback(async () => {
+    try {
+      setRefreshing(true);
+      const query = firestore()
+        .collection('gor')
+        .where('status', '==', 'Aktif');
+      const querySnapshot = await query.get();
+      const data = querySnapshot.docs.map(doc => {
+        return {
+          id: doc.id,
+          ...doc.data(),
+        };
+      });
+      setDataGOR(data);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setRefreshing(false);
+    }
+  }, []);
+
+  // const dataGOR = [
+  //   {
+  //     id: '1',
+  //     namaGOR: 'GOR Chans',
+  //     jumlahLapangan: 5,
+  //     imageSource: require('../assets/img/lapangan_1.jpg'),
+  //   },
+  //   {
+  //     id: '2',
+  //     namaGOR: 'GOR Mahakam',
+  //     jumlahLapangan: 3,
+  //     imageSource: require('../assets/img/lapangan_2.jpg'),
+  //   },
+  //   {
+  //     id: '3',
+  //     namaGOR: 'GOR Rawasari',
+  //     jumlahLapangan: 4,
+  //     imageSource: require('../assets/img/lapangan_3.jpg'),
+  //   },
+  // ];
 
   const dataTransaksi = [
     {
@@ -72,12 +115,20 @@ const Home = ({navigation}: Home) => {
   const handleNavigateAllPemesanan = () => {
     navigation.navigate('RiwayatPemesanan');
   };
+
+  React.useEffect(() => {
+    fetchUser();
+    fetchGOR();
+  }, [fetchUser, fetchGOR]);
   return (
     <>
-      <RootContainer backgroundColor="white">
+      <RootContainer
+        backgroundColor="white"
+        refreshing={refreshing}
+        onRefresh={fetchUser}>
         <HeaderContainer>
           <Header title="Dashboard" />
-          <DashboardHeader fullName="Pedry" />
+          <DashboardHeader fullName={fullName} />
           <Waktu />
         </HeaderContainer>
         <DaftarGor data={dataGOR} />

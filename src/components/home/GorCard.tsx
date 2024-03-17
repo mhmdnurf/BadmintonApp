@@ -6,7 +6,7 @@ interface GORCard {
   alamatGOR: string;
   width?: number;
   marginLeft?: number;
-  imageSource: any;
+  uri: string;
 }
 
 const GORCard = ({
@@ -14,13 +14,13 @@ const GORCard = ({
   alamatGOR,
   width = 300,
   marginLeft = 10,
-  imageSource,
+  uri,
 }: GORCard) => {
   return (
     <View style={styles.container}>
       <View style={[styles.cardContainer, {width}, {marginLeft}]}>
         <View style={styles.imageContainer}>
-          <Image source={imageSource} style={styles.imageSize} />
+          <Image source={{uri: uri}} style={styles.imageSize} />
         </View>
         <View style={styles.infoContainer}>
           <Text style={styles.infoTitle}>{namaGOR}</Text>
