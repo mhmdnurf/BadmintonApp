@@ -7,6 +7,7 @@ interface InputField {
   value: string;
   onChangeText?: (text: string) => void;
   editable?: boolean;
+  marginBottom?: number;
 }
 
 const InputField = ({
@@ -15,11 +16,12 @@ const InputField = ({
   value,
   onChangeText,
   editable,
+  marginBottom,
 }: InputField) => {
   return (
     <>
       <TextInput
-        style={styles.inputField}
+        style={[styles.inputField, {marginBottom}]}
         placeholder={placeholder}
         secureTextEntry={secureTextEntry}
         value={value}

@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   },
   loginTitle: {
     fontSize: 20,
-    fontWeight: '600',
+    fontFamily: 'Poppins SemiBold',
     color: '#6F7789',
   },
 });

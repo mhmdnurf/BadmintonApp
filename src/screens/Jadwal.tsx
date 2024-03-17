@@ -162,14 +162,18 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginHorizontal: 20,
   },
-  titleContainer: {fontWeight: '600', fontSize: 20, marginBottom: 10},
+  titleContainer: {
+    fontFamily: 'Poppins SemiBold',
+    fontSize: 20,
+    marginBottom: 10,
+  },
   itemContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
   },
   dateContainer: {marginHorizontal: 20, marginTop: 40},
-  dateTitle: {fontWeight: '600', fontSize: 20, marginBottom: 10},
+  dateTitle: {fontFamily: 'Poppins SemiBold', fontSize: 20, marginBottom: 10},
   btnPicker: {
     backgroundColor: 'white',
     padding: 10,
@@ -184,7 +188,7 @@ const styles = StyleSheet.create({
   label: {
     color: '#6F7789',
     fontSize: 18,
-    fontWeight: '600',
+    fontFamily: 'Poppins SemiBold',
     alignSelf: 'center',
     marginLeft: 10,
   },

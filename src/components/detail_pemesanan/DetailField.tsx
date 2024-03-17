@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     color: '#41444B',
-    fontWeight: '600',
+    fontFamily: 'Poppins SemiBold',
   },
   btnContainer: {
     backgroundColor: '#AAC8A7',
@@ -54,6 +54,6 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     fontSize: 16,
-    fontWeight: '600',
+    fontFamily: 'Poppins SemiBold',
   },
 });

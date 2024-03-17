@@ -46,7 +46,7 @@ export default PemesananField;
 const styles = StyleSheet.create({
   label: {
     fontSize: 16,
-    fontWeight: '600',
+    fontFamily: 'Poppins SemiBold',
   },
   inputContainer: {
     marginHorizontal: 20,

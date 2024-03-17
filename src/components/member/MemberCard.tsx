@@ -14,7 +14,7 @@ const MemberCard = ({namaGOR}: MemberCard) => {
           <View style={styles.icon}>
             <Icon name="badminton" size={30} color="#AAC8A7" />
           </View>
-          <Text>{namaGOR}</Text>
+          <Text style={styles.title}>{namaGOR}</Text>
         </View>
       </View>
     </>
@@ -45,5 +45,10 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     padding: 10,
     elevation: 3,
+  },
+  title: {
+    fontSize: 16,
+    fontFamily: 'Poppins SemiBold',
+    color: '#4A4A4A',
   },
 });

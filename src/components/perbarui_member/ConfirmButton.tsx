@@ -3,18 +3,15 @@ import {Pressable, StyleSheet, Text, View} from 'react-native';
 
 interface ConfirmButton {
   onPress: () => void;
-  title: string;
 }
 
-const ConfirmButton = ({onPress, title}: ConfirmButton) => {
+const ConfirmButton = ({onPress}: ConfirmButton) => {
   return (
     <>
       <View style={styles.container}>
-        <View style={styles.btnContainer}>
-          <Pressable onPress={onPress}>
-            <Text style={styles.btnText}>{title}</Text>
-          </Pressable>
-        </View>
+        <Pressable style={styles.button} onPress={onPress}>
+          <Text style={styles.buttonText}>Perbarui Member</Text>
+        </Pressable>
       </View>
     </>
   );
@@ -24,22 +21,18 @@ export default ConfirmButton;
 
 const styles = StyleSheet.create({
   container: {
+    marginTop: 15,
     marginHorizontal: 20,
-    marginTop: 20,
-    flex: 1,
   },
-  btnContainer: {
-    alignSelf: 'center',
-    padding: 15,
-    width: '100%',
+  button: {
     backgroundColor: '#AAC8A7',
+    padding: 15,
     borderRadius: 10,
-    elevation: 5,
   },
-  btnText: {
+  buttonText: {
     fontSize: 16,
+    color: 'white',
     textAlign: 'center',
     fontFamily: 'Poppins SemiBold',
-    color: 'white',
   },
 });

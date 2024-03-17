@@ -60,11 +60,13 @@ const styles = StyleSheet.create({
   },
   formTitle: {
     fontSize: 24,
-    fontWeight: '700',
+    fontFamily: 'Poppins Bold',
     color: '#AAC8A7',
   },
   formText: {
     marginBottom: 10,
+    color: '#6F7789',
+    fontFamily: 'Nunito SemiBold',
   },
   input: {
     height: 44,
@@ -86,5 +88,6 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     fontSize: 16,
+    fontFamily: 'Poppins SemiBold',
   },
 });

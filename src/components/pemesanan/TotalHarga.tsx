@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 16,
-    fontWeight: '600',
+    fontFamily: 'Poppins SemiBold',
   },
   picker: {
     borderWidth: 3,
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   },
   hargaText: {
     fontSize: 26,
-    fontWeight: '600',
+    fontFamily: 'Poppins SemiBold',
     color: 'white',
   },
 });
