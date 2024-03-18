@@ -9,7 +9,6 @@ interface RiwayatData {
   lokasi: string;
   waktuBooking: string;
   status: string;
-  waktuBooking: string;
   waktuAkhir: string;
 }
 
