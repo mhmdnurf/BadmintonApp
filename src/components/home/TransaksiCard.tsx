@@ -8,7 +8,7 @@ interface TransaksiCard {
   nomorLapangan: number;
   width?: number;
   gor: string;
-  waktuMulai: string;
+  waktuBooking: string;
   waktuAkhir: string;
   status: string;
 }
@@ -17,7 +17,7 @@ const TransaksiCard = ({
   date,
   nomorLapangan,
   width = Dimensions.get('window').width - 40,
-  waktuMulai,
+  waktuBooking,
   waktuAkhir,
   gor,
   status,
@@ -40,7 +40,7 @@ const TransaksiCard = ({
             Lapangan {nomorLapangan} - {gor}
           </Text>
           <Text style={styles.infoJumlah}>
-            {waktuMulai} - {waktuAkhir}
+            {waktuBooking} - {waktuAkhir}
           </Text>
         </View>
         {status === 'pending' ? (

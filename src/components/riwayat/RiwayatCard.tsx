@@ -10,7 +10,7 @@ interface RiwayatCard {
   time: string;
   gor: string;
   status: string;
-  waktuMulai: string;
+  waktuBooking: string;
   waktuAkhir: string;
 }
 
@@ -18,7 +18,7 @@ const RiwayatCard = ({
   date,
   nomorLapangan,
   width = Dimensions.get('window').width - 40,
-  waktuMulai,
+  waktuBooking,
   waktuAkhir,
   gor,
   status,
@@ -41,7 +41,7 @@ const RiwayatCard = ({
             Lapangan {nomorLapangan} - {gor}
           </Text>
           <Text style={styles.infoJumlah}>
-            {waktuMulai} - ${waktuAkhir}
+            {waktuBooking} - ${waktuAkhir}
           </Text>
         </View>
         {status === 'pending' ? (

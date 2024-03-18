@@ -7,7 +7,7 @@ interface TransaksiData {
   tanggalPemesanan: string;
   lapangan: number;
   lokasi: string;
-  waktuMulai: string;
+  waktuBooking: string;
   waktuAkhir: string;
   status: string;
 }
@@ -35,7 +35,7 @@ const ListTransaksi = ({data, onPress}: ListTransaksi) => {
               )}
               nomorLapangan={item.lapangan}
               gor={item.lokasi}
-              waktuMulai={item.waktuMulai}
+              waktuBooking={item.waktuBooking}
               waktuAkhir={item.waktuAkhir}
               status={item.status}
             />
