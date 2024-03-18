@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -6,33 +7,55 @@ interface TransaksiCard {
   date: string;
   nomorLapangan: number;
   width?: number;
-  time: string;
   gor: string;
+  waktuMulai: string;
+  waktuAkhir: string;
+  status: string;
 }
 
 const TransaksiCard = ({
   date,
   nomorLapangan,
   width = Dimensions.get('window').width - 40,
-  time,
+  waktuMulai,
+  waktuAkhir,
   gor,
+  status,
 }: TransaksiCard) => {
   return (
     <View style={styles.container}>
       <View style={[styles.cardContainer, {width}]}>
         <View style={styles.icon}>
-          <Icon name="react" size={30} color="#AAC8A7" />
+          {status === 'pending' ? (
+            <Icon name="tilde" size={30} color="#EEC759" />
+          ) : status === 'batal' ? (
+            <Icon name="text-box-remove-outline" size={30} color="#FF8080" />
+          ) : (
+            <Icon name="text-box-check-outline" size={30} color="#AAC8A7" />
+          )}
         </View>
         <View style={styles.infoContainer}>
           <Text style={styles.infoDate}>{date}</Text>
           <Text style={styles.infoJumlah}>
-            Lapangan {nomorLapangan} - GOR {gor}
+            Lapangan {nomorLapangan} - {gor}
           </Text>
-          <Text style={styles.infoJumlah}>{time}</Text>
+          <Text style={styles.infoJumlah}>
+            {waktuMulai} - {waktuAkhir}
+          </Text>
         </View>
-        <View style={styles.statusContainer}>
-          <Text style={styles.statusText}>Selesai</Text>
-        </View>
+        {status === 'pending' ? (
+          <View style={[styles.statusContainer, {backgroundColor: '#EEC759'}]}>
+            <Text style={styles.statusText}>Menunggu Pembayaran</Text>
+          </View>
+        ) : status === 'batal' ? (
+          <View style={[styles.statusContainer, {backgroundColor: '#FF8080'}]}>
+            <Text style={styles.statusText}>Dibatalkan</Text>
+          </View>
+        ) : (
+          <View style={styles.statusContainer}>
+            <Text style={styles.statusText}>Selesai</Text>
+          </View>
+        )}
       </View>
     </View>
   );
@@ -73,7 +96,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     marginBottom: 20,
   },
-  statusText: {color: 'white', fontSize: 16, fontFamily: 'Poppins SemiBold'},
+  statusText: {color: 'white', fontSize: 14, fontFamily: 'Poppins SemiBold'},
   icon: {
     position: 'absolute',
     top: -20,

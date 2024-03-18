@@ -50,7 +50,6 @@ const Jadwal = ({route, navigation}: Jadwal) => {
         .map(doc => doc.data())
         .filter(data => data.tanggalPemesanan.split('T')[0] === selectedDate);
       setBooked(bookedData);
-      console.log('Booked data: ', bookedData);
     } catch (error) {
       console.log('Error fetching data: ', error);
     } finally {
@@ -143,7 +142,7 @@ const Jadwal = ({route, navigation}: Jadwal) => {
       waktuBooking: time,
       lapangan: title,
       dataLapangan: dataLapangan,
-      tanggalPemesanan: new Date(date.getTime()).toISOString(),
+      tanggalPemesanan: date.toISOString().split('T')[0],
     });
   };
   return (

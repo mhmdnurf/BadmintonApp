@@ -4,10 +4,12 @@ import TransaksiCard from './TransaksiCard';
 
 interface TransaksiData {
   id: string;
-  date: string;
-  nomorLapangan: number;
-  gor: string;
-  time: string;
+  tanggalPemesanan: string;
+  lapangan: number;
+  lokasi: string;
+  waktuMulai: string;
+  waktuAkhir: string;
+  status: string;
 }
 interface ListTransaksi {
   data: TransaksiData[];
@@ -22,10 +24,20 @@ const ListTransaksi = ({data, onPress}: ListTransaksi) => {
         renderItem={({item}) => (
           <Pressable onPress={onPress}>
             <TransaksiCard
-              date={item.date}
-              nomorLapangan={item.nomorLapangan}
-              gor={item.gor}
-              time={item.time}
+              date={new Date(item.tanggalPemesanan).toLocaleDateString(
+                'id-ID',
+                {
+                  weekday: 'long',
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                },
+              )}
+              nomorLapangan={item.lapangan}
+              gor={item.lokasi}
+              waktuMulai={item.waktuMulai}
+              waktuAkhir={item.waktuAkhir}
+              status={item.status}
             />
           </Pressable>
         )}

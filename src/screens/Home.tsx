@@ -17,6 +17,7 @@ const Home = ({navigation}: Home) => {
   const [fullName, setFullName] = React.useState('');
   const [refreshing, setRefreshing] = React.useState(false);
   const [dataGOR, setDataGOR] = React.useState([] as any);
+  const [dataTransaksi, setDataTransaksi] = React.useState([] as any);
   const fetchUser = React.useCallback(async () => {
     try {
       setRefreshing(true);
@@ -56,57 +57,29 @@ const Home = ({navigation}: Home) => {
     }
   }, []);
 
-  // const dataGOR = [
-  //   {
-  //     id: '1',
-  //     namaGOR: 'GOR Chans',
-  //     jumlahLapangan: 5,
-  //     imageSource: require('../assets/img/lapangan_1.jpg'),
-  //   },
-  //   {
-  //     id: '2',
-  //     namaGOR: 'GOR Mahakam',
-  //     jumlahLapangan: 3,
-  //     imageSource: require('../assets/img/lapangan_2.jpg'),
-  //   },
-  //   {
-  //     id: '3',
-  //     namaGOR: 'GOR Rawasari',
-  //     jumlahLapangan: 4,
-  //     imageSource: require('../assets/img/lapangan_3.jpg'),
-  //   },
-  // ];
-
-  const dataTransaksi = [
-    {
-      id: '1',
-      date: 'Selasa, 12 Februari 2024',
-      nomorLapangan: 1,
-      gor: 'Chans',
-      time: '17.00 - 19.00',
-    },
-    {
-      id: '2',
-      date: 'Rabu, 13 Februari 2024',
-      nomorLapangan: 2,
-      gor: 'Mahakam',
-      time: '18.00 - 20.00',
-    },
-    {
-      id: '3',
-      date: 'Rabu, 13 Februari 2024',
-      nomorLapangan: 5,
-      gor: 'Mahakam',
-      time: '18.00 - 20.00',
-    },
-    {
-      id: '4',
-      date: 'Rabu, 13 Februari 2024',
-      nomorLapangan: 1,
-      gor: 'Mahakam',
-      time: '18.00 - 20.00',
-    },
-  ];
+  const fetchPemesanan = React.useCallback(async () => {
+    try {
+      setRefreshing(true);
+      const user = auth().currentUser;
+      const query = firestore()
+        .collection('booking')
+        .where('user_uid', '==', user?.uid)
+        .limit(3)
+        .orderBy('createdAt', 'asc');
+      const querySnapshot = await query.get();
+      const data = querySnapshot.docs.map(doc => {
+        return {
+          id: doc.id,
+          ...doc.data(),
+        };
+      });
+      setDataTransaksi(data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setRefreshing(false);
+    }
+  }, []);
 
   const handleNavigateDetailPemesanan = () => {
     navigation.navigate('DetailPemesanan');
@@ -119,7 +92,8 @@ const Home = ({navigation}: Home) => {
   React.useEffect(() => {
     fetchUser();
     fetchGOR();
-  }, [fetchUser, fetchGOR]);
+    fetchPemesanan();
+  }, [fetchUser, fetchGOR, fetchPemesanan]);
   return (
     <>
       <RootContainer

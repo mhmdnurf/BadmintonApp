@@ -5,10 +5,13 @@ import {Pressable, StyleSheet, Text, View} from 'react-native';
 
 interface TransaksiData {
   id: string;
-  date: string;
-  nomorLapangan: number;
-  gor: string;
-  time: string;
+  tanggalPemesanan: string;
+  lapangan: number;
+  lokasi: string;
+  waktuBooking: string;
+  status: string;
+  waktuMulai: string;
+  waktuAkhir: string;
 }
 interface InformasiTransaksi {
   data: TransaksiData[];

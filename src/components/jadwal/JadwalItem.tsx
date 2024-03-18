@@ -12,7 +12,7 @@ const JadwalItem = ({title, isBooked, onPress}: JadwalItem) => {
     <>
       <Pressable
         onPress={onPress}
-        style={[styles.container, isBooked ? styles.booked : {}]}>
+        style={[styles.container, isBooked && styles.booked]}>
         <Text style={styles.title}>{title}</Text>
       </Pressable>
     </>
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 2,
   },
   booked: {
-    backgroundColor: 'grey',
+    backgroundColor: '#DDDDDD',
   },
   title: {fontSize: 18, color: 'white', fontFamily: 'Nunito Bold'},
 });

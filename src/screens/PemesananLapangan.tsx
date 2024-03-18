@@ -37,7 +37,13 @@ const PemesananLapangan = ({route, navigation}: PemesananLapangan) => {
         createdAt: firestore.FieldValue.serverTimestamp(),
         gor_uid: dataLapangan.id,
         user_uid: user?.uid,
+        lokasi: dataLapangan.namaGOR,
+        status: 'pending',
+        waktuMulai: waktuBooking,
+        waktuAkhir: waktu[2],
       });
+
+      console.log(tanggalPemesanan);
     } catch (error) {
       console.log(error);
     } finally {
