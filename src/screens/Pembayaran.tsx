@@ -9,14 +9,64 @@ import ConfirmButton from '../components/pemesanan/ConfirmButton';
 import DetailPembayaran from '../components/pembayaran/DetailPembayaran';
 import MemberPicker from '../components/pembayaran/MemberPicker';
 import UploadButton from '../components/pembayaran/UploadButton';
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
+import storage from '@react-native-firebase/storage';
 
-const Pembayaran = () => {
+interface Pembayaran {
+  route: any;
+  navigation: any;
+}
+
+const Pembayaran = ({route, navigation}: Pembayaran) => {
+  const {id} = route.params;
   const [selectedValue, setSelectedValue] = React.useState('2');
-  const [uploadedFiles, setUploadedFiles] = React.useState(null);
-
+  const [buktiPembayaran, setBuktiPembayaran] = React.useState(null);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [bookData, setBookData] = React.useState({} as any);
+  const [pemilikData, setPemilikData] = React.useState({} as any);
   const onValueChange = (itemValue: string) => {
     setSelectedValue(itemValue);
   };
+
+  const fetchBooking = React.useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const bookingRef = firestore().collection('booking').doc(id);
+      const docSnapshot = await bookingRef.get();
+      if (docSnapshot.exists) {
+        const bookingData = docSnapshot.data();
+        setBookData(bookingData);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [id]);
+
+  const fetchPemilik = React.useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const pemilikRef = firestore().collection('users').doc(bookData.gor_uid);
+      const docSnapshot = await pemilikRef.get();
+      if (docSnapshot.exists) {
+        const providerData = docSnapshot.data();
+        setPemilikData(providerData);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [bookData]);
+
+  React.useEffect(() => {
+    fetchBooking();
+  }, [fetchBooking]);
+  React.useEffect(() => {
+    fetchPemilik();
+  }, [fetchPemilik]);
 
   const uploadFile = async () => {
     try {
@@ -24,23 +74,24 @@ const Pembayaran = () => {
         type: [DocumentPicker.types.images, DocumentPicker.types.pdf],
       });
 
-      const uploadedFileUrl = res.uri;
+      const selectedFile = res.uri;
+      const selectedFileName = res.name;
       const fileType = res.type;
 
       console.log({
-        uploadedFileUrl,
+        selectedFile,
+        selectedFileName,
         fileType,
       });
 
-      // Read the file data
-      const fileData = await RNFS.readFile(uploadedFileUrl, 'base64');
+      const fileData = await RNFS.readFile(selectedFile, 'base64');
 
-      setUploadedFiles({
-        data: `data:${fileType};base64,${fileData}`, // Save the file data as base64 string
+      setBuktiPembayaran({
+        data: `data:${fileType};base64,${fileData}`,
         type: fileType,
+        uri: selectedFile,
+        name: selectedFileName,
       });
-
-      console.log(uploadedFiles);
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
         console.info(err);
@@ -50,22 +101,75 @@ const Pembayaran = () => {
     }
   };
 
-  const handleSubmit = () => {
-    console.log('Berhasil');
+  const handleSubmit = async () => {
+    setIsLoading(true);
+    try {
+      const user = auth().currentUser;
+      const buktiPembayaranFileName = `buktiPembayaran/${
+        user?.uid
+      }/buktiPembayaran${user?.uid}/${new Date().getTime()}`;
+      const buktiPembayaranReference = storage().ref(buktiPembayaranFileName);
+
+      const buktiPembayaranFilePath = `${RNFS.DocumentDirectoryPath}/${buktiPembayaran}`;
+      if (buktiPembayaran) {
+        await RNFS.copyFile(buktiPembayaran.uri, buktiPembayaranFilePath);
+      }
+      const buktiPembayaranBlob = await RNFS.readFile(
+        buktiPembayaranFilePath,
+        'base64',
+      );
+
+      await buktiPembayaranReference.putString(buktiPembayaranBlob, 'base64');
+      const buktiPembayaranURL =
+        await buktiPembayaranReference.getDownloadURL();
+
+      if (buktiPembayaranURL) {
+        const paymentRef = firestore().collection('payment').doc();
+        paymentRef.set({
+          createdAt: firestore.FieldValue.serverTimestamp(),
+          gor_uid: bookData.gor_uid,
+          user_uid: user?.uid,
+          booking_uid: bookData.booking_uid,
+          payment_uid: paymentRef.id,
+          jumlahPembayaran: bookData.harga + 2500,
+          buktiPembayaran: buktiPembayaranURL,
+          status: 'Belum Dikonfirmasi',
+          metodePembayaran: selectedValue,
+        });
+        console.log('Successfully uploaded bukti pembayaran');
+      } else {
+        console.log('Failed to upload bukti pembayaran');
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <>
       <RootContainer backgroundColor="white">
         <Header title="Pembayaran" marginBottom={20} />
-        <TotalHarga harga={60000} label="Jumlah yang harus dibayarkan" />
-        <DetailPembayaran />
+        <TotalHarga
+          harga={(bookData?.harga + 2500).toLocaleString()}
+          label="Jumlah yang harus dibayarkan"
+        />
+        <DetailPembayaran
+          data={bookData}
+          isLoading={isLoading}
+          providerData={pemilikData}
+        />
         <MemberPicker
           selectedValue={selectedValue}
           onValueChange={onValueChange}
         />
-        <UploadButton onPress={uploadFile} uploadedFiles={uploadedFiles} />
-        <ConfirmButton title="Konfirmasi Pembayaran" onPress={handleSubmit} />
+        <UploadButton onPress={uploadFile} uploadedFiles={buktiPembayaran} />
+        <ConfirmButton
+          title="Konfirmasi Pembayaran"
+          onPress={handleSubmit}
+          isLoading={isLoading}
+        />
         <BottomSpace marginBottom={40} />
       </RootContainer>
     </>

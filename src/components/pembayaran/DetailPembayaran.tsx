@@ -1,16 +1,62 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
 
-const DetailPembayaran = () => {
+interface Data {
+  harga: number;
+  biayaAdmin: number;
+  noRekening: string;
+  namaBank: string;
+}
+
+interface ProviderData {
+  noRek: string;
+  namaBank: string;
+}
+
+interface DetailPembayaran {
+  data: Data;
+  isLoading?: boolean;
+  providerData: ProviderData;
+}
+
+const DetailPembayaran = ({
+  data,
+  isLoading,
+  providerData,
+}: DetailPembayaran) => {
   return (
     <>
+      {/* <View style={styles.container}>
+        <Text style={styles.label}>Biaya Lapangan</Text>
+        {data.harga ? (
+          <Text style={styles.detail}>{data.harga.toLocaleString()}</Text>
+        ) : (
+          <Text style={styles.detail}>Loading...</Text>
+        )}
+        <Text style={styles.label}>Biaya Admin</Text>
+        <Text style={styles.detail}>Rp.2,500</Text>
+        <Text style={styles.label}>No. Rekening Pembayaran</Text>
+        <Text
+          style={
+            styles.detail
+          }>{`${data?.noRekening} - ${data?.noRekening}`}</Text>
+      </View> */}
       <View style={styles.container}>
-        <Text style={styles.detail}>Biaya Lapangan</Text>
-        <Text style={styles.detail}>Rp. 60.000</Text>
-        <Text style={styles.detail}>Biaya Admin</Text>
-        <Text style={styles.detail}>Rp. 2.500</Text>
-        <Text style={styles.detail}>No. Rekening Pembayaran</Text>
-        <Text style={styles.detail}>1234567890 - BNI</Text>
+        {isLoading ? (
+          <ActivityIndicator size={'large'} color={'red'} />
+        ) : (
+          <>
+            <Text style={styles.label}>Biaya Lapangan</Text>
+            <Text style={styles.detail}>{data?.harga?.toLocaleString()}</Text>
+            <Text style={styles.label}>Biaya Admin</Text>
+            <Text style={styles.detail}>Rp.2,500</Text>
+            <Text style={styles.label}>No. Rekening Pembayaran</Text>
+            <Text
+              style={
+                styles.detail
+              }>{`${providerData?.noRek} - ${providerData?.namaBank}`}</Text>
+          </>
+        )}
       </View>
     </>
   );
@@ -29,11 +75,13 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 16,
-    fontFamily: 'Nunito Bold',
+    fontFamily: 'Poppins SemiBold',
     marginBottom: 10,
   },
   detail: {
-    fontSize: 16,
+    fontSize: 24,
     marginBottom: 10,
+    color: '#FF5B37',
+    fontFamily: 'Poppins SemiBold',
   },
 });

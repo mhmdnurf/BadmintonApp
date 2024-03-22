@@ -14,7 +14,8 @@ const MemberPicker = ({selectedValue, onValueChange}: MemberPicker) => {
         <Text style={styles.label}>Pilih Member</Text>
         <View style={styles.picker}>
           <Picker selectedValue={selectedValue} onValueChange={onValueChange}>
-            <Picker.Item label="Member" value="1" />
+            <Picker.Item label="Transfer" value="transfer" />
+            <Picker.Item label="Member" value="member" />
           </Picker>
         </View>
       </View>

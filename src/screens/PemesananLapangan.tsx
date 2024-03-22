@@ -7,6 +7,7 @@ import BottomSpace from '../components/BottomSpace';
 import ConfirmButton from '../components/pemesanan/ConfirmButton';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
+import {Alert} from 'react-native';
 interface PemesananLapangan {
   route: any;
   navigation: any;
@@ -24,35 +25,6 @@ const PemesananLapangan = ({route, navigation}: PemesananLapangan) => {
 
   const harga = (timeNumber * dataLapangan.hargaLapangan) / 2;
 
-  const handleSubmit = async () => {
-    setIsLoading(true);
-    try {
-      const user = auth().currentUser;
-      firestore().collection('booking').add({
-        lamaBermain,
-        waktuBooking,
-        tanggalPemesanan,
-        lapangan: lapanganNumber,
-        waktu: waktu,
-        createdAt: firestore.FieldValue.serverTimestamp(),
-        gor_uid: dataLapangan.id,
-        user_uid: user?.uid,
-        lokasi: dataLapangan.namaGOR,
-        status: 'pending',
-        waktuMulai: waktuBooking,
-        waktuAkhir: waktu[2],
-      });
-
-      console.log(tanggalPemesanan);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-
-    // navigation.navigate('Pembayaran');
-  };
-
   const generateTimes = (): string[] => {
     const startHour = parseInt(waktuBooking.split('.')[0], 10);
     const times = [];
@@ -65,6 +37,53 @@ const PemesananLapangan = ({route, navigation}: PemesananLapangan) => {
     return times;
   };
   const waktu = generateTimes();
+
+  const handleSubmit = async () => {
+    Alert.alert(
+      'Apakah anda yakin akan memesan lapangan?',
+      'Segera lakukan pembayaran, setelah pemesanan dilakukan',
+      [
+        {
+          text: 'Batal',
+          style: 'cancel',
+        },
+        {
+          text: 'Ya',
+          onPress: async () => {
+            setIsLoading(true);
+            let bookingRef;
+            try {
+              const user = auth().currentUser;
+              bookingRef = firestore().collection('booking').doc();
+              await bookingRef.set({
+                lamaBermain,
+                waktuBooking,
+                tanggalPemesanan,
+                lapangan: lapanganNumber,
+                waktu: waktu,
+                createdAt: firestore.FieldValue.serverTimestamp(),
+                gor_uid: dataLapangan.id,
+                user_uid: user?.uid,
+                lokasi: dataLapangan.namaGOR,
+                status: 'pending',
+                waktuMulai: waktuBooking,
+                waktuAkhir: waktu[2],
+                booking_uid: bookingRef.id,
+                harga: harga,
+              });
+            } catch (error) {
+              console.log(error);
+            } finally {
+              setIsLoading(false);
+              if (bookingRef) {
+                navigation.navigate('Pembayaran', {id: bookingRef.id});
+              }
+            }
+          },
+        },
+      ],
+    );
+  };
 
   return (
     <>

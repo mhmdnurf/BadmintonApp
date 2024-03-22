@@ -49,7 +49,6 @@ const Home = ({navigation}: Home) => {
         };
       });
       setDataGOR(data);
-      console.log(data);
     } catch (error) {
       console.log(error);
     } finally {

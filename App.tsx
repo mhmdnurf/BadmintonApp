@@ -19,6 +19,7 @@ import Member from './src/screens/Member';
 import DetailMember from './src/screens/DetailMember';
 import PerbaruiMember from './src/screens/PerbaruiMember';
 import PembayaranMember from './src/screens/PembayaranMember';
+import EditProfile from './src/screens/EditProfile';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -188,6 +189,11 @@ export default function App() {
               headerShown: true,
               headerTintColor: '#AAC8A7',
             }}
+          />
+          <Stack.Screen
+            name="EditProfile"
+            component={EditProfile}
+            options={{title: '', headerShown: true, headerTintColor: '#AAC8A7'}}
           />
         </Stack.Navigator>
       </NavigationContainer>

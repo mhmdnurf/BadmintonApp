@@ -26,8 +26,9 @@ const ListRiwayat = ({data, refreshing, onRefresh}: ListRiwayat) => {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
-        renderItem={({item}) => (
+        renderItem={({item, index}) => (
           <RiwayatCard
+            key={index}
             date={new Date(item.tanggalPemesanan).toLocaleDateString('id-ID', {
               weekday: 'long',
               year: 'numeric',

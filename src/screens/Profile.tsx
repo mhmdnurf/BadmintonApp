@@ -22,7 +22,7 @@ const Profile = ({navigation}: Profile) => {
   };
 
   const handleNavigateToEditProfile = () => {
-    console.log('Edit Profile');
+    navigation.navigate('EditProfile');
   };
   return (
     <>
