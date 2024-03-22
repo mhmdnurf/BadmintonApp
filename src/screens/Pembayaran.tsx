@@ -144,6 +144,7 @@ const Pembayaran = ({route, navigation}: Pembayaran) => {
       console.log(error);
     } finally {
       setIsLoading(false);
+      navigation.navigate('PembayaranBerhasil');
     }
   };
 
