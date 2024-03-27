@@ -71,7 +71,7 @@ const PemesananLapangan = ({route, navigation}: PemesananLapangan) => {
                 booking_uid: bookingRef.id,
                 harga: harga,
                 expiredAt: firestore.Timestamp.fromDate(
-                  new Date(Date.now() + 3 * 60 * 1000),
+                  new Date(Date.now() + 30 * 60 * 1000),
                 ),
               });
             } catch (error) {

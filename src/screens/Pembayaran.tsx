@@ -13,6 +13,7 @@ import auth from '@react-native-firebase/auth';
 import storage from '@react-native-firebase/storage';
 import Timer from '../components/pembayaran/Timer';
 import MethodPicker from '../components/pembayaran/MethodPicker';
+import PendingButton from '../components/pembayaran/PendingButton';
 
 interface Pembayaran {
   route: any;
@@ -21,7 +22,7 @@ interface Pembayaran {
 
 const Pembayaran = ({route, navigation}: Pembayaran) => {
   const {id} = route.params;
-  const [selectedValue, setSelectedValue] = React.useState('2');
+  const [selectedValue, setSelectedValue] = React.useState('transfer');
   const [buktiPembayaran, setBuktiPembayaran] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(false);
   const [bookData, setBookData] = React.useState({} as any);
@@ -155,13 +156,15 @@ const Pembayaran = ({route, navigation}: Pembayaran) => {
         await buktiPembayaranReference.getDownloadURL();
 
       if (buktiPembayaranURL) {
-        const paymentRef = firestore().collection('payment').doc();
+        const paymentRef = firestore()
+          .collection('payment')
+          .doc(bookData.booking_uid);
         paymentRef.set({
           createdAt: firestore.FieldValue.serverTimestamp(),
           gor_uid: bookData.gor_uid,
           user_uid: user?.uid,
           booking_uid: bookData.booking_uid,
-          payment_uid: paymentRef.id,
+          payment_uid: bookData.booking_uid,
           jumlahPembayaran: bookData.harga + 2500,
           buktiPembayaran: buktiPembayaranURL,
           status: 'Belum Dikonfirmasi',
@@ -176,6 +179,29 @@ const Pembayaran = ({route, navigation}: Pembayaran) => {
     } finally {
       setIsLoading(false);
       navigation.navigate('PembayaranBerhasil');
+    }
+  };
+
+  const handleNavigationHome = () => {
+    try {
+      const user = auth().currentUser;
+      const paymentRef = firestore()
+        .collection('payment')
+        .doc(bookData.booking_uid);
+      paymentRef.set({
+        createdAt: firestore.FieldValue.serverTimestamp(),
+        gor_uid: bookData.gor_uid,
+        user_uid: user?.uid,
+        booking_uid: bookData.booking_uid,
+        payment_uid: bookData.booking_uid,
+        jumlahPembayaran: bookData.harga + 2500,
+        status: 'Belum Dikonfirmasi',
+        metodePembayaran: selectedValue,
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      navigation.navigate('Home');
     }
   };
 
@@ -203,6 +229,7 @@ const Pembayaran = ({route, navigation}: Pembayaran) => {
           onPress={handleSubmit}
           isLoading={isLoading}
         />
+        <PendingButton onPress={handleNavigationHome} />
         <BottomSpace marginBottom={40} />
       </RootContainer>
     </>
