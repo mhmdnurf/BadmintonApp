@@ -3,7 +3,7 @@ import {FlatList, RefreshControl} from 'react-native';
 import RiwayatCard from './RiwayatCard';
 
 interface RiwayatData {
-  id: string;
+  booking_uid: string;
   tanggalPemesanan: string;
   lapangan: number;
   lokasi: string;
@@ -26,9 +26,8 @@ const ListRiwayat = ({data, refreshing, onRefresh}: ListRiwayat) => {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
-        renderItem={({item, index}) => (
+        renderItem={({item}) => (
           <RiwayatCard
-            key={index}
             date={new Date(item.tanggalPemesanan).toLocaleDateString('id-ID', {
               weekday: 'long',
               year: 'numeric',
@@ -43,7 +42,7 @@ const ListRiwayat = ({data, refreshing, onRefresh}: ListRiwayat) => {
             waktuAkhir={item.waktuAkhir}
           />
         )}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.booking_uid}
         showsVerticalScrollIndicator={false}
       />
     </>

@@ -45,11 +45,13 @@ const Jadwal = ({route, navigation}: Jadwal) => {
       const query = await firestore()
         .collection('booking')
         .where('gor_uid', '==', itemId)
+        .where('status', '!=', 'expired')
         .get();
       const bookedData = query.docs
         .map(doc => doc.data())
         .filter(data => data.tanggalPemesanan.split('T')[0] === selectedDate);
       setBooked(bookedData);
+      console.log('Booked data: ', bookedData);
     } catch (error) {
       console.log('Error fetching data: ', error);
     } finally {

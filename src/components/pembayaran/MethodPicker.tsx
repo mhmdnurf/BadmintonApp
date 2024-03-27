@@ -2,16 +2,16 @@ import {Picker} from '@react-native-picker/picker';
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
-interface MemberPicker {
+interface MethodPicker {
   selectedValue: string;
   onValueChange: (itemValue: string) => void;
 }
 
-const MemberPicker = ({selectedValue, onValueChange}: MemberPicker) => {
+const MethodPicker = ({selectedValue, onValueChange}: MethodPicker) => {
   return (
     <>
       <View style={styles.pickerContainer}>
-        <Text style={styles.label}>Pilih Member</Text>
+        <Text style={styles.label}>Metode Pembayaran</Text>
         <View style={styles.picker}>
           <Picker selectedValue={selectedValue} onValueChange={onValueChange}>
             <Picker.Item label="Transfer" value="transfer" />
@@ -23,7 +23,7 @@ const MemberPicker = ({selectedValue, onValueChange}: MemberPicker) => {
   );
 };
 
-export default MemberPicker;
+export default MethodPicker;
 
 const styles = StyleSheet.create({
   label: {

@@ -41,16 +41,16 @@ const RiwayatCard = ({
             Lapangan {nomorLapangan} - {gor}
           </Text>
           <Text style={styles.infoJumlah}>
-            {waktuBooking} - ${waktuAkhir}
+            {waktuBooking} - {waktuAkhir}
           </Text>
         </View>
         {status === 'pending' ? (
           <View style={[styles.statusContainer, {backgroundColor: '#EEC759'}]}>
             <Text style={styles.statusText}>Menunggu Pembayaran</Text>
           </View>
-        ) : status === 'batal' ? (
+        ) : status === 'expired' ? (
           <View style={[styles.statusContainer, {backgroundColor: '#FF8080'}]}>
-            <Text style={styles.statusText}>Dibatalkan</Text>
+            <Text style={styles.statusText}>Kadaluwarsa</Text>
           </View>
         ) : (
           <View style={styles.statusContainer}>

@@ -26,21 +26,6 @@ const DetailPembayaran = ({
 }: DetailPembayaran) => {
   return (
     <>
-      {/* <View style={styles.container}>
-        <Text style={styles.label}>Biaya Lapangan</Text>
-        {data.harga ? (
-          <Text style={styles.detail}>{data.harga.toLocaleString()}</Text>
-        ) : (
-          <Text style={styles.detail}>Loading...</Text>
-        )}
-        <Text style={styles.label}>Biaya Admin</Text>
-        <Text style={styles.detail}>Rp.2,500</Text>
-        <Text style={styles.label}>No. Rekening Pembayaran</Text>
-        <Text
-          style={
-            styles.detail
-          }>{`${data?.noRekening} - ${data?.noRekening}`}</Text>
-      </View> */}
       <View style={styles.container}>
         {isLoading ? (
           <ActivityIndicator size={'large'} color={'red'} />

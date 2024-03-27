@@ -1,8 +1,6 @@
 import React from 'react';
 import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import Pdf from 'react-native-pdf';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-
 type uploadedFiles = {
   data: string;
   type: string;
@@ -29,7 +27,7 @@ const UploadButton = ({onPress, uploadedFiles}: UploadButton) => {
           </View>
         )}
         <Pressable onPress={onPress} style={styles.btnUpload}>
-          <Icon name="plus" size={30} color="white" />
+          <Text style={styles.btnText}>Upload</Text>
         </Pressable>
       </View>
     </>
@@ -43,6 +41,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 10,
+    color: 'gray',
   },
   uploadContainer: {
     marginHorizontal: 20,
@@ -57,7 +56,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 3,
     borderColor: '#EEEDEB',
-    borderRadius: 5,
+    borderRadius: 15,
     padding: 10,
     backgroundColor: '#AAC8A7',
   },
@@ -72,4 +71,9 @@ const styles = StyleSheet.create({
   },
   image: {width: 200, height: 200, resizeMode: 'contain'},
   pdf: {width: 200, height: 200},
+  btnText: {
+    color: 'white',
+    fontFamily: 'Poppins SemiBold',
+    fontSize: 16,
+  },
 });

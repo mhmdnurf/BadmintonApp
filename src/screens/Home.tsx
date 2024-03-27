@@ -9,6 +9,7 @@ import InformasiTransaksi from '../components/home/InformasiTransaksi';
 import BottomSpace from '../components/BottomSpace';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import {useIsFocused} from '@react-navigation/native';
 interface Home {
   navigation: any;
 }
@@ -18,6 +19,7 @@ const Home = ({navigation}: Home) => {
   const [refreshing, setRefreshing] = React.useState(false);
   const [dataGOR, setDataGOR] = React.useState([] as any);
   const [dataTransaksi, setDataTransaksi] = React.useState([] as any);
+  const isFocued = useIsFocused();
   const fetchUser = React.useCallback(async () => {
     try {
       setRefreshing(true);
@@ -89,16 +91,25 @@ const Home = ({navigation}: Home) => {
   };
 
   React.useEffect(() => {
+    if (isFocued) {
+      fetchUser();
+      fetchGOR();
+      fetchPemesanan();
+    }
+  }, [fetchUser, fetchGOR, fetchPemesanan, isFocued]);
+
+  const onRefresh = () => {
     fetchUser();
     fetchGOR();
     fetchPemesanan();
-  }, [fetchUser, fetchGOR, fetchPemesanan]);
+  };
+
   return (
     <>
       <RootContainer
         backgroundColor="white"
         refreshing={refreshing}
-        onRefresh={fetchUser}>
+        onRefresh={onRefresh}>
         <HeaderContainer>
           <Header title="Dashboard" />
           <DashboardHeader fullName={fullName} />
