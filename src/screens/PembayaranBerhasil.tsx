@@ -1,49 +1,85 @@
 import React from 'react';
-import {Dimensions, Pressable, StyleSheet, Text, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Dimensions,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import RootContainer from '../components/RootContainer';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import firestore from '@react-native-firebase/firestore';
 
 interface PembayaranBerhasil {
   navigation: any;
+  route: any;
 }
 
-const PembayaranBerhasil = ({navigation}: PembayaranBerhasil) => {
+const PembayaranBerhasil = ({navigation, route}: PembayaranBerhasil) => {
+  const {id, lapangan} = route.params;
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [dataGOR, setDataGOR] = React.useState({} as any);
+
+  const fetchGOR = React.useCallback(async () => {
+    try {
+      const gorRef = firestore().collection('gor').doc(id);
+      const docSnapshot = await gorRef.get();
+      if (docSnapshot.exists) {
+        const gorData = docSnapshot.data();
+        setDataGOR(gorData);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [id]);
+
+  React.useEffect(() => {
+    fetchGOR();
+  }, [fetchGOR]);
+
   return (
     <>
       <RootContainer backgroundColor="#AAC8A7">
-        <View style={styles.container}>
-          <View style={styles.card}>
-            <Text style={styles.title}>Pembayaran Berhasil</Text>
-            <View style={styles.icon}>
-              <Icon name="check-circle" size={100} color="#AAC8A7" />
+        {isLoading ? (
+          <ActivityIndicator size="large" color="black" />
+        ) : (
+          <View style={styles.container}>
+            <View style={styles.card}>
+              <Text style={styles.title}>Pembayaran Berhasil</Text>
+              <View style={styles.icon}>
+                <Icon name="check-circle" size={100} color="#AAC8A7" />
+              </View>
+              <View style={styles.labelContainer}>
+                <Text style={styles.label}>GOR Chans - Lapangan 1</Text>
+                <Text style={styles.label}>14.00 - 15.00</Text>
+                <Text style={styles.label}>Rp.27,500</Text>
+                <Text style={styles.label}>Senin, 20 September 2021</Text>
+              </View>
+              <View style={styles.line} />
+              <Text style={styles.label}>Transaksi #217981739813</Text>
+              <Text style={styles.notes}>
+                Terimakasih, atas pembayaran anda, pesanan anda akan kami proses
+                dan mohon menunggu pihak pemilik GOR untuk memverifikasi
+                pembayaran anda 😊.
+              </Text>
+              <Pressable
+                style={({pressed}) => [
+                  {
+                    backgroundColor: pressed ? 'gray' : '#AAC8A7',
+                    borderWidth: pressed ? 3 : 0,
+                    borderColor: '#8C9B8E',
+                  },
+                  styles.btn,
+                ]}
+                onPress={() => navigation.navigate('Home')}>
+                <Text style={styles.btnText}>Confirm</Text>
+              </Pressable>
             </View>
-            <View style={styles.labelContainer}>
-              <Text style={styles.label}>GOR Chans - Lapangan 1</Text>
-              <Text style={styles.label}>14.00 - 15.00</Text>
-              <Text style={styles.label}>Rp.27,500</Text>
-              <Text style={styles.label}>Senin, 20 September 2021</Text>
-            </View>
-            <View style={styles.line} />
-            <Text style={styles.label}>Transaksi #217981739813</Text>
-            <Text style={styles.notes}>
-              Terimakasih, atas pembayaran anda, pesanan anda akan kami proses
-              dan mohon menunggu pihak pemilik GOR untuk memverifikasi
-              pembayaran anda 😊.
-            </Text>
-            <Pressable
-              style={({pressed}) => [
-                {
-                  backgroundColor: pressed ? 'gray' : '#AAC8A7',
-                  borderWidth: pressed ? 3 : 0,
-                  borderColor: '#8C9B8E',
-                },
-                styles.btn,
-              ]}
-              onPress={() => navigation.navigate('Home')}>
-              <Text style={styles.btnText}>Confirm</Text>
-            </Pressable>
           </View>
-        </View>
+        )}
       </RootContainer>
     </>
   );

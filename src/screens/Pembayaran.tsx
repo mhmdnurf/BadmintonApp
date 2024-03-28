@@ -178,7 +178,9 @@ const Pembayaran = ({route, navigation}: Pembayaran) => {
       console.log(error);
     } finally {
       setIsLoading(false);
-      navigation.navigate('PembayaranBerhasil');
+      navigation.navigate('PembayaranBerhasil', {
+        id: bookData.gor_uid,
+      });
     }
   };
 
