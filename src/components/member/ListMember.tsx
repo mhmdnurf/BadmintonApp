@@ -1,30 +1,35 @@
 import React from 'react';
-import {FlatList, Pressable} from 'react-native';
+import {FlatList, Pressable, RefreshControl} from 'react-native';
 import MemberCard from './MemberCard';
 import BottomSpace from '../BottomSpace';
 
 interface ListMember {
-  id: string;
+  user_uid: string;
   namaGOR: string;
 }
 
 interface MemberData {
   data: ListMember[];
-  onPress: () => void;
+  onPress: (id: string) => () => void;
+  refreshing?: boolean;
+  onRefresh?: () => void;
 }
 
-const ListMember = ({data, onPress}: MemberData) => {
+const ListMember = ({data, onPress, refreshing, onRefresh}: MemberData) => {
   return (
     <>
       <FlatList
         data={data}
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
         renderItem={({item}) => (
-          <Pressable onPress={onPress}>
+          <Pressable onPress={onPress(item.user_uid)}>
             <MemberCard namaGOR={item.namaGOR} />
           </Pressable>
         )}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.user_uid}
         ListFooterComponent={<BottomSpace marginBottom={100} />}
       />
     </>
