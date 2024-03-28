@@ -4,7 +4,7 @@ import ListTransaksi from './ListTransaksi';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 
 interface TransaksiData {
-  id: string;
+  booking_uid: string;
   tanggalPemesanan: string;
   lapangan: number;
   lokasi: string;
@@ -15,7 +15,7 @@ interface TransaksiData {
 }
 interface InformasiTransaksi {
   data: TransaksiData[];
-  onPress: () => void;
+  onPress: (id: string) => () => void;
   onPressShowAll: () => void;
 }
 

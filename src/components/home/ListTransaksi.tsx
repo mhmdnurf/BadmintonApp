@@ -3,7 +3,7 @@ import {FlatList, Pressable} from 'react-native';
 import TransaksiCard from './TransaksiCard';
 
 interface TransaksiData {
-  id: string;
+  booking_uid: string;
   tanggalPemesanan: string;
   lapangan: number;
   lokasi: string;
@@ -13,7 +13,7 @@ interface TransaksiData {
 }
 interface ListTransaksi {
   data: TransaksiData[];
-  onPress: () => void;
+  onPress: (id: string) => () => void;
 }
 
 const ListTransaksi = ({data, onPress}: ListTransaksi) => {
@@ -22,7 +22,7 @@ const ListTransaksi = ({data, onPress}: ListTransaksi) => {
       <FlatList
         data={data}
         renderItem={({item}) => (
-          <Pressable onPress={onPress}>
+          <Pressable onPress={onPress(item.booking_uid)}>
             <TransaksiCard
               date={new Date(item.tanggalPemesanan).toLocaleDateString(
                 'id-ID',
@@ -41,7 +41,7 @@ const ListTransaksi = ({data, onPress}: ListTransaksi) => {
             />
           </Pressable>
         )}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.booking_uid}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
       />

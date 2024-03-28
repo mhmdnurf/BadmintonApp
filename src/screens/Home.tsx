@@ -10,6 +10,7 @@ import BottomSpace from '../components/BottomSpace';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import {useIsFocused} from '@react-navigation/native';
+import {Alert} from 'react-native';
 interface Home {
   navigation: any;
 }
@@ -82,8 +83,22 @@ const Home = ({navigation}: Home) => {
     }
   }, []);
 
-  const handleNavigateDetailPemesanan = () => {
-    navigation.navigate('DetailPemesanan');
+  const handleNavigatePemesananById = (id: string) => () => {
+    const data = dataTransaksi.find((item: any) => item.booking_uid === id);
+    if (data.status === 'expired') {
+      Alert.alert(
+        'Pemesanan telah kadaluarsa',
+        'Silahkan lakukan pemesanan ulang',
+      );
+    } else if (data.status === 'pending') {
+      navigation.navigate('Pembayaran', {
+        id,
+      });
+    } else {
+      navigation.navigate('DetailPemesanan', {
+        id,
+      });
+    }
   };
 
   const handleNavigateAllPemesanan = () => {
@@ -118,7 +133,7 @@ const Home = ({navigation}: Home) => {
         <DaftarGor data={dataGOR} />
         <InformasiTransaksi
           data={dataTransaksi}
-          onPress={handleNavigateDetailPemesanan}
+          onPress={handleNavigatePemesananById}
           onPressShowAll={handleNavigateAllPemesanan}
         />
         <BottomSpace marginBottom={100} />
