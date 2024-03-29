@@ -167,8 +167,14 @@ const Pembayaran = ({route, navigation}: Pembayaran) => {
           payment_uid: bookData.booking_uid,
           jumlahPembayaran: bookData.harga + 2500,
           buktiPembayaran: buktiPembayaranURL,
-          status: 'Belum Dikonfirmasi',
+          status: 'menunggu konfirmasi',
           metodePembayaran: selectedValue,
+        });
+        const bookingRef = firestore()
+          .collection('booking')
+          .doc(bookData.booking_uid);
+        bookingRef.update({
+          status: 'menunggu konfirmasi',
         });
         console.log('Successfully uploaded bukti pembayaran');
       } else {
@@ -180,6 +186,17 @@ const Pembayaran = ({route, navigation}: Pembayaran) => {
       setIsLoading(false);
       navigation.navigate('PembayaranBerhasil', {
         id: bookData.gor_uid,
+        lapangan: bookData.lapangan,
+        waktuBooking: bookData.waktuBooking,
+        waktuAkhir: bookData.waktuAkhir,
+        tanggalPembayaran: new Date().toLocaleDateString('id-ID', {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        }),
+        transaksi_id: bookData.booking_uid,
+        jumlahPembayaran: bookData.harga + 2500,
       });
     }
   };

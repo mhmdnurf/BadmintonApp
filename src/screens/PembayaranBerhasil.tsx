@@ -17,7 +17,15 @@ interface PembayaranBerhasil {
 }
 
 const PembayaranBerhasil = ({navigation, route}: PembayaranBerhasil) => {
-  const {id, lapangan} = route.params;
+  const {
+    id,
+    lapangan,
+    waktuBooking,
+    waktuAkhir,
+    jumlahPembayaran,
+    tanggalPembayaran,
+    transaksi_id,
+  } = route.params;
   const [isLoading, setIsLoading] = React.useState(true);
   const [dataGOR, setDataGOR] = React.useState({} as any);
 
@@ -53,13 +61,19 @@ const PembayaranBerhasil = ({navigation, route}: PembayaranBerhasil) => {
                 <Icon name="check-circle" size={100} color="#AAC8A7" />
               </View>
               <View style={styles.labelContainer}>
-                <Text style={styles.label}>GOR Chans - Lapangan 1</Text>
-                <Text style={styles.label}>14.00 - 15.00</Text>
-                <Text style={styles.label}>Rp.27,500</Text>
-                <Text style={styles.label}>Senin, 20 September 2021</Text>
+                <Text style={styles.label}>
+                  {dataGOR.namaGOR} - Lapangan {lapangan}
+                </Text>
+                <Text style={styles.label}>
+                  {waktuBooking} - {waktuAkhir}
+                </Text>
+                <Text style={styles.label}>
+                  Rp. {jumlahPembayaran.toLocaleString()}
+                </Text>
+                <Text style={styles.label}>{tanggalPembayaran}</Text>
               </View>
               <View style={styles.line} />
-              <Text style={styles.label}>Transaksi #217981739813</Text>
+              <Text style={styles.label}>Transaksi #{transaksi_id}</Text>
               <Text style={styles.notes}>
                 Terimakasih, atas pembayaran anda, pesanan anda akan kami proses
                 dan mohon menunggu pihak pemilik GOR untuk memverifikasi
@@ -96,7 +110,7 @@ const styles = StyleSheet.create({
   },
   card: {
     width: '80%',
-    height: '80%',
+    height: '85%',
     backgroundColor: 'white',
     borderRadius: 15,
     padding: 20,

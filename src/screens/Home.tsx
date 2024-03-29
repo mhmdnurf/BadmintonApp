@@ -20,7 +20,7 @@ const Home = ({navigation}: Home) => {
   const [refreshing, setRefreshing] = React.useState(false);
   const [dataGOR, setDataGOR] = React.useState([] as any);
   const [dataTransaksi, setDataTransaksi] = React.useState([] as any);
-  const isFocued = useIsFocused();
+  const isFocused = useIsFocused();
   const fetchUser = React.useCallback(async () => {
     try {
       setRefreshing(true);
@@ -106,12 +106,12 @@ const Home = ({navigation}: Home) => {
   };
 
   React.useEffect(() => {
-    if (isFocued) {
+    if (isFocused) {
       fetchUser();
       fetchGOR();
       fetchPemesanan();
     }
-  }, [fetchUser, fetchGOR, fetchPemesanan, isFocued]);
+  }, [fetchUser, fetchGOR, fetchPemesanan, isFocused]);
 
   const onRefresh = () => {
     fetchUser();

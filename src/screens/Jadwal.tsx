@@ -51,7 +51,7 @@ const Jadwal = ({route, navigation}: Jadwal) => {
         .map(doc => doc.data())
         .filter(data => data.tanggalPemesanan.split('T')[0] === selectedDate);
       setBooked(bookedData);
-      console.log('Booked data: ', bookedData);
+      // console.log('Booked data: ', bookedData);
     } catch (error) {
       console.log('Error fetching data: ', error);
     } finally {
@@ -118,13 +118,16 @@ const Jadwal = ({route, navigation}: Jadwal) => {
       });
       setLapangan(
         Array.from({length: dataLapangan.jumlahLapangan}, (_, i) => {
-          const booking = dataLapangan.booked.find(
+          const bookings = dataLapangan.booked.filter(
             (b: {lapangan: number}) => b.lapangan === i + 1,
+          );
+          const bookedTimes = bookings.flatMap((b: {waktu: string}) =>
+            JSON.parse(b.waktu),
           );
           return {
             title: `Lapangan ${i + 1}`,
             data: waktu,
-            bookedTimes: booking ? booking.waktu : [],
+            bookedTimes: bookedTimes,
           };
         }),
       );
