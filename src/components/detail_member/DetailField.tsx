@@ -2,28 +2,33 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import InputField from '../InputField';
 
-const DetailField = () => {
+interface DetailField {
+  dataMember: any;
+}
+
+const DetailField = ({dataMember}: DetailField) => {
+  console.log(dataMember);
   return (
     <>
       <View style={styles.container}>
         <Text style={styles.label}>Status</Text>
         <InputField
           placeholder="Status"
-          value="Status"
+          value={dataMember?.status}
           editable={false}
           marginBottom={20}
         />
         <Text style={styles.label}>Kuota Lapangan</Text>
         <InputField
           placeholder="Kuota Lapangan"
-          value="6 Pemesanan"
+          value={(dataMember?.kuota || 0).toString()}
           editable={false}
           marginBottom={20}
         />
         <Text style={styles.label}>Masa Aktif</Text>
         <InputField
           placeholder="Masa Aktif"
-          value="31-10-2024"
+          value={dataMember?.masaAktif}
           editable={false}
           marginBottom={20}
         />
