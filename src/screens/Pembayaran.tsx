@@ -14,6 +14,7 @@ import storage from '@react-native-firebase/storage';
 import Timer from '../components/pembayaran/Timer';
 import MethodPicker from '../components/pembayaran/MethodPicker';
 import PendingButton from '../components/pembayaran/PendingButton';
+import {Alert} from 'react-native';
 
 interface Pembayaran {
   route: any;
@@ -135,6 +136,14 @@ const Pembayaran = ({route, navigation}: Pembayaran) => {
 
   const handleSubmit = async () => {
     setIsLoading(true);
+    if (!buktiPembayaran) {
+      Alert.alert(
+        'Upload bukti pembayaran terlebih dahulu',
+        'Bukti Pembayaran tidak boleh kosong',
+      );
+      setIsLoading(false);
+      return;
+    }
     try {
       const user = auth().currentUser;
       const buktiPembayaranFileName = `buktiPembayaran/${
@@ -177,6 +186,20 @@ const Pembayaran = ({route, navigation}: Pembayaran) => {
           status: 'menunggu konfirmasi',
         });
         console.log('Successfully uploaded bukti pembayaran');
+        navigation.navigate('PembayaranBerhasil', {
+          id: bookData.gor_uid,
+          lapangan: bookData.lapangan,
+          waktuBooking: bookData.waktuBooking,
+          waktuAkhir: bookData.waktuAkhir,
+          tanggalPembayaran: new Date().toLocaleDateString('id-ID', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          }),
+          transaksi_id: bookData.booking_uid,
+          jumlahPembayaran: bookData.harga + 2500,
+        });
       } else {
         console.log('Failed to upload bukti pembayaran');
       }
@@ -184,20 +207,6 @@ const Pembayaran = ({route, navigation}: Pembayaran) => {
       console.log(error);
     } finally {
       setIsLoading(false);
-      navigation.navigate('PembayaranBerhasil', {
-        id: bookData.gor_uid,
-        lapangan: bookData.lapangan,
-        waktuBooking: bookData.waktuBooking,
-        waktuAkhir: bookData.waktuAkhir,
-        tanggalPembayaran: new Date().toLocaleDateString('id-ID', {
-          weekday: 'long',
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-        }),
-        transaksi_id: bookData.booking_uid,
-        jumlahPembayaran: bookData.harga + 2500,
-      });
     }
   };
 
