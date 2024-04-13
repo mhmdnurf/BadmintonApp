@@ -107,10 +107,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     height: Dimensions.get('window').height,
+    marginVertical: 20,
   },
   card: {
     width: '80%',
-    height: '85%',
+    height: Dimensions.get('window').height,
     backgroundColor: 'white',
     borderRadius: 15,
     padding: 20,

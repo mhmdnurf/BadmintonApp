@@ -48,9 +48,17 @@ const PerbaruiField = ({data, dataUser, onPress}: PerbaruiField) => {
         <Text style={styles.label}>Masa Aktif</Text>
         <InputField placeholder="Masa Aktif" value={month} editable={false} />
         <Text style={styles.label}>Nomor Rekening</Text>
-        <InputField placeholder="Nomor Rekening" value={dataUser?.noRek} />
+        <InputField
+          placeholder="Nomor Rekening"
+          value={dataUser?.noRek}
+          editable={false}
+        />
         <Text style={styles.label}>Nama Bank</Text>
-        <InputField placeholder="Nama Bank" value={dataUser?.namaBank} />
+        <InputField
+          placeholder="Nama Bank"
+          value={dataUser?.namaBank}
+          editable={false}
+        />
         <Text style={styles.label}>Upload Bukti Pembayaran</Text>
         <Pressable style={styles.btnUpload} onPress={onPress}>
           <Text style={styles.btnText}>Upload</Text>

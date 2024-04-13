@@ -6,6 +6,7 @@ interface RootContainer {
   backgroundColor: string;
   refreshing?: boolean;
   onRefresh?: () => void;
+  nestedScrollEnabled?: boolean;
 }
 
 const RootContainer = ({
@@ -13,6 +14,7 @@ const RootContainer = ({
   backgroundColor,
   refreshing,
   onRefresh,
+  nestedScrollEnabled,
 }: RootContainer) => {
   return (
     <>
@@ -20,6 +22,7 @@ const RootContainer = ({
       <ScrollView
         style={[styles.container, {backgroundColor}]}
         showsVerticalScrollIndicator={false}
+        nestedScrollEnabled={nestedScrollEnabled}
         refreshControl={
           refreshing !== undefined && onRefresh !== undefined ? (
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />

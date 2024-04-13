@@ -15,6 +15,7 @@ import Timer from '../components/pembayaran/Timer';
 import MethodPicker from '../components/pembayaran/MethodPicker';
 import PendingButton from '../components/pembayaran/PendingButton';
 import {Alert} from 'react-native';
+import ModalLoader from '../components/ModalLoader';
 
 interface Pembayaran {
   route: any;
@@ -28,6 +29,7 @@ const Pembayaran = ({route, navigation}: Pembayaran) => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [bookData, setBookData] = React.useState({} as any);
   const [pemilikData, setPemilikData] = React.useState({} as any);
+  const [dataMember, setDataMember] = React.useState({} as any);
   const onValueChange = (itemValue: string) => {
     setSelectedValue(itemValue);
   };
@@ -48,6 +50,59 @@ const Pembayaran = ({route, navigation}: Pembayaran) => {
       setIsLoading(false);
     }
   }, [id]);
+
+  const fetchMember = React.useCallback(async () => {
+    const user = auth().currentUser;
+    try {
+      const querySnapshot = await firestore()
+        .collection('member')
+        .where('user_uid', '==', user.uid)
+        .where('gor_uid', '==', bookData.gor_uid)
+        .get();
+
+      // Assuming there is only one matching document
+      const doc = querySnapshot.docs[0];
+      const data = doc.data();
+
+      // Parse masaAktif
+      const [monthName, year] = data.masaAktif.split(' ');
+      const monthNames = [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December',
+      ];
+      const monthNumber = monthNames.indexOf(monthName) + 1; // Months are 1-indexed
+      const masaAktifDate = new Date(parseInt(year, 10), monthNumber, 1);
+
+      const currentDate = new Date();
+
+      // Compare the year and the month
+      if (
+        masaAktifDate.getFullYear() < currentDate.getFullYear() ||
+        (masaAktifDate.getFullYear() === currentDate.getFullYear() &&
+          masaAktifDate.getMonth() < currentDate.getMonth())
+      ) {
+        await firestore()
+          .collection('member')
+          .doc(doc.data().member_uid)
+          .update({status: 'Tidak Aktif'});
+      }
+
+      setDataMember(data);
+      console.log(data.member_uid);
+    } catch (error) {
+      console.log('Error getting document:', error);
+    }
+  }, [bookData.gor_uid]);
 
   const fetchPemilik = React.useCallback(async () => {
     try {
@@ -71,6 +126,9 @@ const Pembayaran = ({route, navigation}: Pembayaran) => {
   React.useEffect(() => {
     fetchPemilik();
   }, [fetchPemilik]);
+  React.useEffect(() => {
+    fetchMember();
+  }, [fetchMember]);
 
   React.useEffect(() => {
     const bookingRef = firestore().collection('booking').doc(id);
@@ -136,73 +194,80 @@ const Pembayaran = ({route, navigation}: Pembayaran) => {
 
   const handleSubmit = async () => {
     setIsLoading(true);
-    if (!buktiPembayaran) {
-      Alert.alert(
-        'Upload bukti pembayaran terlebih dahulu',
-        'Bukti Pembayaran tidak boleh kosong',
-      );
-      setIsLoading(false);
-      return;
-    }
     try {
       const user = auth().currentUser;
-      const buktiPembayaranFileName = `buktiPembayaran/${
-        user?.uid
-      }/buktiPembayaran${user?.uid}/${new Date().getTime()}`;
-      const buktiPembayaranReference = storage().ref(buktiPembayaranFileName);
+      let buktiPembayaranURL = '';
 
-      const buktiPembayaranFilePath = `${RNFS.DocumentDirectoryPath}/${buktiPembayaran}`;
-      if (buktiPembayaran) {
+      if (selectedValue !== 'member') {
+        if (!buktiPembayaran) {
+          Alert.alert(
+            'Upload bukti pembayaran terlebih dahulu',
+            'Bukti Pembayaran tidak boleh kosong',
+          );
+          setIsLoading(false);
+          return;
+        }
+
+        const buktiPembayaranFileName = `buktiPembayaran/${
+          user?.uid
+        }/buktiPembayaran${user?.uid}/${new Date().getTime()}`;
+        const buktiPembayaranReference = storage().ref(buktiPembayaranFileName);
+
+        const buktiPembayaranFilePath = `${RNFS.DocumentDirectoryPath}/${buktiPembayaran}`;
         await RNFS.copyFile(buktiPembayaran.uri, buktiPembayaranFilePath);
-      }
-      const buktiPembayaranBlob = await RNFS.readFile(
-        buktiPembayaranFilePath,
-        'base64',
-      );
+        const buktiPembayaranBlob = await RNFS.readFile(
+          buktiPembayaranFilePath,
+          'base64',
+        );
 
-      await buktiPembayaranReference.putString(buktiPembayaranBlob, 'base64');
-      const buktiPembayaranURL =
-        await buktiPembayaranReference.getDownloadURL();
-
-      if (buktiPembayaranURL) {
-        const paymentRef = firestore()
-          .collection('payment')
-          .doc(bookData.booking_uid);
-        paymentRef.set({
-          createdAt: firestore.FieldValue.serverTimestamp(),
-          gor_uid: bookData.gor_uid,
-          user_uid: user?.uid,
-          booking_uid: bookData.booking_uid,
-          payment_uid: bookData.booking_uid,
-          jumlahPembayaran: bookData.harga + 2500,
-          buktiPembayaran: buktiPembayaranURL,
-          status: 'menunggu konfirmasi',
-          metodePembayaran: selectedValue,
-        });
-        const bookingRef = firestore()
-          .collection('booking')
-          .doc(bookData.booking_uid);
-        bookingRef.update({
-          status: 'menunggu konfirmasi',
-        });
-        console.log('Successfully uploaded bukti pembayaran');
-        navigation.navigate('PembayaranBerhasil', {
-          id: bookData.gor_uid,
-          lapangan: bookData.lapangan,
-          waktuBooking: bookData.waktuBooking,
-          waktuAkhir: bookData.waktuAkhir,
-          tanggalPembayaran: new Date().toLocaleDateString('id-ID', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-          }),
-          transaksi_id: bookData.booking_uid,
-          jumlahPembayaran: bookData.harga + 2500,
-        });
-      } else {
-        console.log('Failed to upload bukti pembayaran');
+        await buktiPembayaranReference.putString(buktiPembayaranBlob, 'base64');
+        buktiPembayaranURL = await buktiPembayaranReference.getDownloadURL();
       }
+
+      const paymentRef = firestore()
+        .collection('payment')
+        .doc(bookData.booking_uid);
+      paymentRef.set({
+        createdAt: firestore.FieldValue.serverTimestamp(),
+        gor_uid: bookData.gor_uid,
+        user_uid: user?.uid,
+        booking_uid: bookData.booking_uid,
+        payment_uid: bookData.booking_uid,
+        jumlahPembayaran: bookData.harga + 2500,
+        buktiPembayaran: buktiPembayaranURL,
+        status: selectedValue === 'member' ? 'Selesai' : 'menunggu konfirmasi',
+        metodePembayaran: selectedValue,
+      });
+
+      if (selectedValue === 'member' && dataMember?.kuota > 0) {
+        const memberRef = firestore()
+          .collection('member')
+          .doc(dataMember.member_uid);
+        memberRef.update({
+          kuota: firestore.FieldValue.increment(-1),
+        });
+      }
+      const bookingRef = firestore()
+        .collection('booking')
+        .doc(bookData.booking_uid);
+      bookingRef.update({
+        status: selectedValue === 'member' ? 'Selesai' : 'menunggu konfirmasi',
+      });
+      console.log('Successfully uploaded bukti pembayaran');
+      navigation.navigate('PembayaranBerhasil', {
+        id: bookData.gor_uid,
+        lapangan: bookData.lapangan,
+        waktuBooking: bookData.waktuBooking,
+        waktuAkhir: bookData.waktuAkhir,
+        tanggalPembayaran: new Date().toLocaleDateString('id-ID', {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        }),
+        transaksi_id: bookData.booking_uid,
+        jumlahPembayaran: bookData.harga + 2500,
+      });
     } catch (error) {
       console.log(error);
     } finally {
@@ -250,6 +315,7 @@ const Pembayaran = ({route, navigation}: Pembayaran) => {
         <MethodPicker
           selectedValue={selectedValue}
           onValueChange={onValueChange}
+          dataMember={dataMember}
         />
         <UploadButton onPress={uploadFile} uploadedFiles={buktiPembayaran} />
         <ConfirmButton
@@ -259,6 +325,7 @@ const Pembayaran = ({route, navigation}: Pembayaran) => {
         />
         <PendingButton onPress={handleNavigationHome} />
         <BottomSpace marginBottom={40} />
+        <ModalLoader isLoading={isLoading} />
       </RootContainer>
     </>
   );

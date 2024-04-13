@@ -16,9 +16,13 @@ const DetailMember = ({navigation, route}: DetailMember) => {
   const fetchMember = React.useCallback(async () => {
     const user = auth().currentUser;
     try {
-      const query = await firestore().collection('member').doc(user.uid).get();
-      const data = query.data();
-      if (!data) {
+      const querySnapshot = await firestore()
+        .collection('member')
+        .where('user_uid', '==', user.uid)
+        .where('gor_uid', '==', id)
+        .get();
+
+      if (querySnapshot.empty) {
         setDataMember({
           status: 'Tidak Aktif',
           kuota: '0',
@@ -26,11 +30,49 @@ const DetailMember = ({navigation, route}: DetailMember) => {
         });
         return;
       }
+
+      // Assuming there is only one matching document
+      const doc = querySnapshot.docs[0];
+      const data = doc.data();
+
+      // Parse masaAktif
+      const [monthName, year] = data.masaAktif.split(' ');
+      const monthNames = [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December',
+      ];
+      const monthNumber = monthNames.indexOf(monthName) + 1; // Months are 1-indexed
+      const masaAktifDate = new Date(parseInt(year, 10), monthNumber, 1);
+
+      const currentDate = new Date();
+
+      // Compare the year and the month
+      if (
+        masaAktifDate.getFullYear() < currentDate.getFullYear() ||
+        (masaAktifDate.getFullYear() === currentDate.getFullYear() &&
+          masaAktifDate.getMonth() < currentDate.getMonth())
+      ) {
+        await firestore()
+          .collection('member')
+          .doc(doc.id)
+          .update({status: 'Tidak Aktif'});
+      }
+
       setDataMember(data);
     } catch (error) {
       console.log('Error getting document:', error);
     }
-  }, []);
+  }, [id]);
 
   React.useEffect(() => {
     fetchMember();

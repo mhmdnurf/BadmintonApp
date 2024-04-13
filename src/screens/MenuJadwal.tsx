@@ -11,9 +11,11 @@ interface MenuJadwal {
 
 const MenuJadwal = ({navigation}: MenuJadwal) => {
   const [dataGOR, setDataGOR] = React.useState([] as any);
+  const [refreshing, setRefreshing] = React.useState(false);
 
   const fetchGOR = React.useCallback(async () => {
     try {
+      setRefreshing(true);
       const query = await firestore()
         .collection('gor')
         .where('status', '==', 'Aktif')
@@ -27,6 +29,8 @@ const MenuJadwal = ({navigation}: MenuJadwal) => {
       setDataGOR(data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setRefreshing(false);
     }
   }, []);
 
@@ -44,7 +48,12 @@ const MenuJadwal = ({navigation}: MenuJadwal) => {
     <>
       <FlatContainer backgroundColor="white">
         <Header title="Pilih GOR" marginBottom={20} />
-        <DaftarGor data={dataGOR} onPress={handlePress} />
+        <DaftarGor
+          data={dataGOR}
+          onPress={handlePress}
+          onRefresh={fetchGOR}
+          refreshing={refreshing}
+        />
         <BottomSpace marginBottom={100} />
       </FlatContainer>
     </>

@@ -6,7 +6,7 @@ const MemberField = () => {
   return (
     <>
       <View style={styles.svgContainer}>
-        <Logo width={300} height={200} />
+        <Logo width={300} height={150} />
       </View>
       <View style={styles.container}>
         <Text style={styles.label}>Status Member</Text>

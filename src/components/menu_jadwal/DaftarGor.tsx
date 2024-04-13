@@ -1,5 +1,11 @@
 import React from 'react';
-import {Dimensions, FlatList, Pressable, StyleSheet} from 'react-native';
+import {
+  Dimensions,
+  FlatList,
+  Pressable,
+  RefreshControl,
+  StyleSheet,
+} from 'react-native';
 import GORCard from '../home/GorCard';
 
 interface GorData {
@@ -12,15 +18,20 @@ interface GorData {
 interface DaftarGor {
   data: GorData[];
   onPress: (id: string) => () => void;
+  refreshing: boolean;
+  onRefresh: () => void;
 }
 
-const DaftarGor = ({data, onPress}: DaftarGor) => {
+const DaftarGor = ({data, onPress, refreshing, onRefresh}: DaftarGor) => {
   return (
     <>
       <FlatList
         style={styles.flatlist}
         data={data}
         showsHorizontalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
         renderItem={({item}) => (
           <Pressable onPress={onPress(item.id)}>
             <GORCard

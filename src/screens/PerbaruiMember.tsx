@@ -10,6 +10,8 @@ import BottomSpace from '../components/BottomSpace';
 import {Alert} from 'react-native';
 import auth from '@react-native-firebase/auth';
 import storage from '@react-native-firebase/storage';
+import DisplayBukti from '../components/member/DisplayBukti';
+import ModalLoader from '../components/ModalLoader';
 interface PerbaruiMember {
   navigation: any;
   route: any;
@@ -20,6 +22,7 @@ const PerbaruiMember = ({navigation, route}: PerbaruiMember) => {
   const [dataGOR, setDataGOR] = React.useState<any>({});
   const [dataUser, setDataUser] = React.useState<any>({});
   const [buktiPembayaran, setBuktiPembayaran] = React.useState(null);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const fetchGOR = React.useCallback(async () => {
     try {
@@ -80,6 +83,7 @@ const PerbaruiMember = ({navigation, route}: PerbaruiMember) => {
   };
 
   const handlePembayaranMember = async () => {
+    setIsLoading(true);
     if (!buktiPembayaran) {
       Alert.alert('Upload bukti pembayaran terlebih dahulu');
       return;
@@ -111,13 +115,17 @@ const PerbaruiMember = ({navigation, route}: PerbaruiMember) => {
       });
 
       if (buktiPembayaranURL) {
-        const memberRef = firestore().collection('member').doc(user?.uid);
+        const userUidSubstring = user?.uid.substring(0, 10);
+        const gorUidSubstring = dataGOR.user_uid.substring(0, 10);
+        const docId = `${userUidSubstring}${gorUidSubstring}`;
+        const memberRef = firestore().collection('member').doc(docId);
         memberRef.set({
           createdAt: firestore.FieldValue.serverTimestamp(),
           gor_uid: dataGOR.user_uid,
           user_uid: user?.uid,
           masaAktif: month,
           kuota: 4,
+          member_uid: docId,
           jumlahPembayaran: dataGOR.hargaMember,
           buktiPembayaran: buktiPembayaranURL,
           status: 'Menunggu Aktivasi',
@@ -128,12 +136,17 @@ const PerbaruiMember = ({navigation, route}: PerbaruiMember) => {
     } catch (error) {
       console.log(error);
     } finally {
-      Alert.alert('Berhasil mengirim bukti pembayaran', '', [
-        {
-          text: 'OK',
-          onPress: () => navigation.navigate('Home'),
-        },
-      ]);
+      setIsLoading(false);
+      Alert.alert(
+        'Berhasil mengirim bukti pembayaran',
+        'Mohon menunggu member anda diaktivasi oleh pemilik GOR',
+        [
+          {
+            text: 'OK',
+            onPress: () => navigation.navigate('Home'),
+          },
+        ],
+      );
     }
   };
   return (
@@ -145,8 +158,10 @@ const PerbaruiMember = ({navigation, route}: PerbaruiMember) => {
           dataUser={dataUser}
           onPress={uploadFile}
         />
+        <DisplayBukti buktiPembayaran={buktiPembayaran} />
         <ConfirmButton onPress={handlePembayaranMember} />
         <BottomSpace marginBottom={40} />
+        <ModalLoader isLoading={isLoading} />
       </RootContainer>
     </>
   );
