@@ -18,6 +18,7 @@ interface Profile {
 const Profile = ({navigation}: Profile) => {
   const isFocused = useIsFocused();
   const [data, setData] = React.useState<any>();
+
   const fetchProfile = React.useCallback(async () => {
     try {
       const user = auth().currentUser;
@@ -54,7 +55,7 @@ const Profile = ({navigation}: Profile) => {
         <Header title="Profile" />
         <ImageProfile uri={data?.fotoUser} />
         <EditButton onPress={handleNavigateToEditProfile} />
-        <ProfileField />
+        <ProfileField data={data} />
         <RiwayatButton onPress={handleNavigateRiwayat} />
         <LogoutButton onPress={handleLogout} />
         <BottomSpace marginBottom={100} />
