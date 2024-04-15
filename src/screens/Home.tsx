@@ -105,6 +105,12 @@ const Home = ({navigation}: Home) => {
     navigation.navigate('RiwayatPemesanan');
   };
 
+  const handleNavigateGORById = (id: string) => () => {
+    navigation.navigate('InfoGOR', {
+      id,
+    });
+  };
+
   React.useEffect(() => {
     if (isFocused) {
       fetchUser();
@@ -130,7 +136,7 @@ const Home = ({navigation}: Home) => {
           <DashboardHeader fullName={fullName} />
           <Waktu />
         </HeaderContainer>
-        <DaftarGor data={dataGOR} />
+        <DaftarGor data={dataGOR} onPress={handleNavigateGORById} />
         <InformasiTransaksi
           data={dataTransaksi}
           onPress={handleNavigatePemesananById}

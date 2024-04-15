@@ -21,6 +21,7 @@ import PerbaruiMember from './src/screens/PerbaruiMember';
 import PembayaranMember from './src/screens/PembayaranMember';
 import EditProfile from './src/screens/EditProfile';
 import PembayaranBerhasil from './src/screens/PembayaranBerhasil';
+import InfoGOR from './src/screens/InfoGOR';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -203,6 +204,15 @@ export default function App() {
             component={PembayaranBerhasil}
             options={{
               headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="InfoGOR"
+            component={InfoGOR}
+            options={{
+              headerShown: true,
+              title: '',
+              headerTintColor: '#AAC8A7',
             }}
           />
         </Stack.Navigator>
