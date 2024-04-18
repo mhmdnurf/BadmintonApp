@@ -1,49 +1,83 @@
 import React from 'react';
-import {Dimensions, Pressable, StyleSheet, Text, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Dimensions,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import RootContainer from '../components/RootContainer';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Header from '../components/Header';
+import InputField from '../components/InputField';
+import ImageProfile from '../components/profile/ImageProfile';
+import BottomSpace from '../components/BottomSpace';
+import firestore from '@react-native-firebase/firestore';
 
 interface PembayaranBerhasil {
   navigation: any;
+  route: any;
 }
 
-const EditProfile = ({navigation}: PembayaranBerhasil) => {
+const EditProfile = ({navigation, route}: PembayaranBerhasil) => {
+  const {data} = route.params;
+  const [namaLengkap, setNamaLengkap] = React.useState(data?.namaLengkap);
+  const [nomor, setNomor] = React.useState(data?.nomor);
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  const handleEdit = () => {
+    setIsLoading(true);
+    try {
+      firestore().collection('users').doc(data?.user_uid).update({
+        namaLengkap: namaLengkap,
+        nomor: nomor,
+      });
+    } catch (error) {
+      console.log('Error updating data: ', error);
+    } finally {
+      setIsLoading(false);
+      navigation.goBack();
+    }
+  };
   return (
     <>
-      <RootContainer backgroundColor="#AAC8A7">
+      <RootContainer backgroundColor="white">
         <View style={styles.container}>
-          <View style={styles.card}>
-            <Text style={styles.title}>Pembayaran Berhasil</Text>
-            <View style={styles.icon}>
-              <Icon name="check-circle" size={100} color="#AAC8A7" />
-            </View>
-            <View style={styles.labelContainer}>
-              <Text style={styles.label}>GOR Chans - Lapangan 1</Text>
-              <Text style={styles.label}>14.00 - 15.00</Text>
-              <Text style={styles.label}>Rp.27,500</Text>
-              <Text style={styles.label}>Senin, 20 September 2021</Text>
-            </View>
-            <View style={styles.line} />
-            <Text style={styles.label}>Transaksi #217981739813</Text>
-            <Text style={styles.notes}>
-              Terimakasih, atas pembayaran anda, pesanan anda akan kami proses
-              dan mohon menunggu pihak pemilik GOR untuk memverifikasi
-              pembayaran anda 😊.
-            </Text>
-            <Pressable
-              style={({pressed}) => [
-                {
-                  backgroundColor: pressed ? 'gray' : '#AAC8A7',
-                  borderWidth: pressed ? 3 : 0,
-                  borderColor: '#8C9B8E',
-                },
-                styles.btn,
-              ]}
-              onPress={() => navigation.navigate('Home')}>
-              <Text style={styles.btnText}>Confirm</Text>
-            </Pressable>
+          <Header title="Edit Profile" />
+          <ImageProfile uri={data?.fotoUser} />
+          <View style={styles.fieldContainer}>
+            <Text style={styles.label}>NIK</Text>
+            <InputField placeholder="NIK" editable={false} value={data?.NIK} />
+            <Text style={styles.label}>Nama Lengkap</Text>
+            <InputField
+              placeholder="Nama Lengkap"
+              editable={true}
+              value={namaLengkap}
+              onChangeText={text => setNamaLengkap(text)}
+            />
+            <Text style={styles.label}>Email</Text>
+            <InputField
+              placeholder="Email"
+              editable={false}
+              value={data?.email}
+            />
+            <Text style={styles.label}>Nomor Telepon</Text>
+            <InputField
+              placeholder="Nomor Telepon"
+              editable={true}
+              value={nomor}
+              onChangeText={text => setNomor(text)}
+            />
           </View>
+          <Pressable style={styles.btnContainer} onPress={handleEdit}>
+            {isLoading ? (
+              <ActivityIndicator size="small" color="white" />
+            ) : (
+              <Text style={styles.btnText}>Edit</Text>
+            )}
+          </Pressable>
         </View>
+        <BottomSpace marginBottom={100} />
       </RootContainer>
     </>
   );
@@ -53,67 +87,28 @@ export default EditProfile;
 
 const styles = StyleSheet.create({
   container: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: Dimensions.get('window').height,
+    marginHorizontal: 20,
   },
-  card: {
-    width: '80%',
-    height: '80%',
-    backgroundColor: 'white',
-    borderRadius: 15,
-    padding: 20,
-    elevation: 5,
-    shadowColor: 'black',
-    shadowOffset: {width: 0, height: 0},
-    shadowOpacity: 0.5,
-  },
-  title: {
-    fontSize: 20,
-    fontFamily: 'Poppins Bold',
-    textAlign: 'center',
-    marginTop: 20,
-    color: 'gray',
-  },
-  icon: {
-    alignSelf: 'center',
-    marginTop: 20,
+  fieldContainer: {
+    marginTop: 40,
   },
   label: {
-    fontSize: 16,
-    fontFamily: 'Poppins SemiBold',
-    color: 'black',
-    textAlign: 'center',
-  },
-  notes: {
-    marginTop: 20,
     fontSize: 14,
-    fontFamily: 'Poppins Regular',
     color: 'gray',
-    textAlign: 'center',
+    fontFamily: 'Poppins SemiBold',
   },
-  line: {
-    borderWidth: 2,
-    marginTop: 40,
-    marginBottom: 20,
-    borderStyle: 'dashed',
-    borderColor: 'gray',
-  },
-  btn: {
+  btnContainer: {
+    width: Dimensions.get('window').width - 40,
+    padding: 15,
     backgroundColor: '#AAC8A7',
-    marginTop: 10,
-    marginHorizontal: 20,
     borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 15,
   },
   btnText: {
     fontSize: 16,
-    fontFamily: 'Poppins SemiBold',
     color: 'white',
-    textAlign: 'center',
-    padding: 10,
-  },
-  labelContainer: {
-    marginTop: 20,
+    fontFamily: 'Poppins SemiBold',
   },
 });

@@ -1,20 +1,29 @@
 import React from 'react';
-import {ActivityIndicator, Image, StyleSheet, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Image,
+  Pressable,
+  StyleSheet,
+  View,
+} from 'react-native';
 
 interface ImageProfile {
   uri: string | undefined;
+  onPress?: () => void;
 }
 
-const ImageProfile = ({uri}: ImageProfile) => {
+const ImageProfile = ({uri, onPress}: ImageProfile) => {
   return (
     <>
-      <View style={styles.imageContainer}>
-        {uri ? (
-          <Image source={{uri: uri}} style={styles.image} />
-        ) : (
-          <ActivityIndicator size="large" color="#AAC8A7" />
-        )}
-      </View>
+      <Pressable onPress={onPress}>
+        <View style={styles.imageContainer}>
+          {uri ? (
+            <Image source={{uri: uri}} style={styles.image} />
+          ) : (
+            <ActivityIndicator size="large" color="#AAC8A7" />
+          )}
+        </View>
+      </Pressable>
     </>
   );
 };

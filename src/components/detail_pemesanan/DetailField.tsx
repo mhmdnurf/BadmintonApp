@@ -47,7 +47,17 @@ const DetailField = ({dataPemesanan, dataPembayaran, dataGOR}: DetailField) => {
           editable={false}
         />
         <Text style={styles.label}>Status</Text>
-        <InputField placeholder="Status" value="Selesai" editable={false} />
+        <InputField
+          placeholder="Status"
+          value={
+            dataPemesanan?.status === 'pending'
+              ? 'Menunggu Pembayaran'
+              : dataPembayaran?.status === 'menunggu konfirmasi'
+              ? 'Sedang Diverifikasi'
+              : 'Selesai'
+          }
+          editable={false}
+        />
         <Text style={styles.label}>Bukti Pembayaran</Text>
         <Pressable
           style={styles.btnContainer}

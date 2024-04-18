@@ -34,6 +34,7 @@ const DetailMember = ({navigation, route}: DetailMember) => {
       // Assuming there is only one matching document
       const doc = querySnapshot.docs[0];
       const data = doc.data();
+      console.log('Data: ', data);
 
       // Parse masaAktif
       const [monthName, year] = data.masaAktif.split(' ');
@@ -51,7 +52,7 @@ const DetailMember = ({navigation, route}: DetailMember) => {
         'November',
         'December',
       ];
-      const monthNumber = monthNames.indexOf(monthName) + 1; // Months are 1-indexed
+      const monthNumber = monthNames.indexOf(monthName); // Months are 0-indexed
       const masaAktifDate = new Date(parseInt(year, 10), monthNumber, 1);
 
       const currentDate = new Date();

@@ -51,6 +51,10 @@ const TransaksiCard = ({
           <View style={[styles.statusContainer, {backgroundColor: '#FF8080'}]}>
             <Text style={styles.statusText}>Kadaluwarsa</Text>
           </View>
+        ) : status === 'menunggu konfirmasi' ? (
+          <View style={[styles.statusContainer, {backgroundColor: '#EEC759'}]}>
+            <Text style={styles.statusText}>Sedang Diverifikasi</Text>
+          </View>
         ) : (
           <View style={styles.statusContainer}>
             <Text style={styles.statusText}>Selesai</Text>

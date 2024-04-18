@@ -22,6 +22,7 @@ import PembayaranMember from './src/screens/PembayaranMember';
 import EditProfile from './src/screens/EditProfile';
 import PembayaranBerhasil from './src/screens/PembayaranBerhasil';
 import InfoGOR from './src/screens/InfoGOR';
+import Notifikasi from './src/screens/Notifikasi';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -71,6 +72,16 @@ const MainTabs = () => {
           options={{
             tabBarIcon: ({color, size}) => (
               <Icon name="badge-account-horizontal" color={color} size={size} />
+            ),
+            headerShown: false,
+          }}
+        />
+        <Tab.Screen
+          name="Notifikasi"
+          component={Notifikasi}
+          options={{
+            tabBarIcon: ({color, size}) => (
+              <Icon name="bell" color={color} size={size} />
             ),
             headerShown: false,
           }}
@@ -196,7 +207,9 @@ export default function App() {
             name="EditProfile"
             component={EditProfile}
             options={{
-              headerShown: false,
+              title: '',
+              headerShown: true,
+              headerTintColor: '#AAC8A7',
             }}
           />
           <Stack.Screen

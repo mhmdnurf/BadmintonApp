@@ -63,6 +63,7 @@ const Pembayaran = ({route, navigation}: Pembayaran) => {
       // Assuming there is only one matching document
       const doc = querySnapshot.docs[0];
       const data = doc.data();
+      console.log(data);
 
       // Parse masaAktif
       const [monthName, year] = data.masaAktif.split(' ');
@@ -80,7 +81,7 @@ const Pembayaran = ({route, navigation}: Pembayaran) => {
         'November',
         'December',
       ];
-      const monthNumber = monthNames.indexOf(monthName) + 1; // Months are 1-indexed
+      const monthNumber = monthNames.indexOf(monthName); // Months are 0-indexed
       const masaAktifDate = new Date(parseInt(year, 10), monthNumber, 1);
 
       const currentDate = new Date();
@@ -93,7 +94,7 @@ const Pembayaran = ({route, navigation}: Pembayaran) => {
       ) {
         await firestore()
           .collection('member')
-          .doc(doc.data().member_uid)
+          .doc(doc.id)
           .update({status: 'Tidak Aktif'});
       }
 
@@ -233,7 +234,8 @@ const Pembayaran = ({route, navigation}: Pembayaran) => {
         user_uid: user?.uid,
         booking_uid: bookData.booking_uid,
         payment_uid: bookData.booking_uid,
-        jumlahPembayaran: bookData.harga + 2500,
+        jumlahPembayaran:
+          selectedValue === 'member' ? 0 : bookData.harga + 2500,
         buktiPembayaran: buktiPembayaranURL,
         status: selectedValue === 'member' ? 'Selesai' : 'menunggu konfirmasi',
         metodePembayaran: selectedValue,

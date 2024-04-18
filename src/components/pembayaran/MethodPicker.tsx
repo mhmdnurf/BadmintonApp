@@ -17,8 +17,7 @@ const MethodPicker = ({
       <View style={styles.pickerContainer}>
         <Text style={styles.label}>Metode Pembayaran</Text>
         <View style={styles.picker}>
-          {dataMember?.status === 'Menunggu Aktivasi' &&
-          dataMember?.kuota > 0 ? (
+          {dataMember?.status === 'Aktif' && dataMember?.kuota > 0 ? (
             <>
               <Picker
                 selectedValue={selectedValue}

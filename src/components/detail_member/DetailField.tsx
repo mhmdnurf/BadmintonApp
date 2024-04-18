@@ -7,7 +7,6 @@ interface DetailField {
 }
 
 const DetailField = ({dataMember}: DetailField) => {
-  console.log(dataMember);
   return (
     <>
       <View style={styles.container}>
