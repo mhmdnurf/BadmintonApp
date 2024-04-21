@@ -12,6 +12,7 @@ interface DetailMember {
 
 const DetailMember = ({navigation, route}: DetailMember) => {
   const {id} = route.params;
+  const [refreshing, setRefreshing] = React.useState(false);
   const [dataMember, setDataMember] = React.useState<any>({});
   const fetchMember = React.useCallback(async () => {
     const user = auth().currentUser;
@@ -63,15 +64,18 @@ const DetailMember = ({navigation, route}: DetailMember) => {
         (masaAktifDate.getFullYear() === currentDate.getFullYear() &&
           masaAktifDate.getMonth() < currentDate.getMonth())
       ) {
+        setRefreshing(true);
         await firestore()
           .collection('member')
           .doc(doc.id)
-          .update({status: 'Tidak Aktif'});
+          .update({status: 'Tidak Aktif', kuota: 0, masaAktif: '-'});
       }
 
       setDataMember(data);
     } catch (error) {
       console.log('Error getting document:', error);
+    } finally {
+      setRefreshing(false);
     }
   }, [id]);
 
@@ -83,7 +87,10 @@ const DetailMember = ({navigation, route}: DetailMember) => {
   };
   return (
     <>
-      <RootContainer backgroundColor="white">
+      <RootContainer
+        backgroundColor="white"
+        refreshing={refreshing}
+        onRefresh={fetchMember}>
         <Header title="Detail Member" />
         <DetailField dataMember={dataMember} />
         <PerpanjangButton onPress={handleNavigatePerbaruiMember} />

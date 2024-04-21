@@ -255,6 +255,17 @@ const Pembayaran = ({route, navigation}: Pembayaran) => {
       bookingRef.update({
         status: selectedValue === 'member' ? 'Selesai' : 'menunggu konfirmasi',
       });
+
+      if (selectedValue !== 'member') {
+        const notifikasiRef = firestore().collection('notifikasi');
+        notifikasiRef.add({
+          createdAt: firestore.FieldValue.serverTimestamp(),
+          user_uid: bookData.gor_uid,
+          title: 'Pemesanan Lapangan Masuk',
+          pesan: `Ada pemesanan lapangan di Lapangan ${bookData.lapangan} pada pukul ${bookData.waktuBooking} - ${bookData.waktuAkhir} tanggal ${bookData.tanggalPemesanan}`,
+          booking_uid: bookData.booking_uid,
+        });
+      }
       console.log('Successfully uploaded bukti pembayaran');
       navigation.navigate('PembayaranBerhasil', {
         id: bookData.gor_uid,

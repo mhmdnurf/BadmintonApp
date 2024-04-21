@@ -130,6 +130,15 @@ const PerbaruiMember = ({navigation, route}: PerbaruiMember) => {
           buktiPembayaran: buktiPembayaranURL,
           status: 'Menunggu Aktivasi',
         });
+
+        const notifikasiRef = firestore().collection('notifikasi');
+        await notifikasiRef.add({
+          createdAt: firestore.FieldValue.serverTimestamp(),
+          user_uid: dataGOR.user_uid,
+          title: 'Terdapat Member Melakukan Pembayaran',
+          pesan: 'Anda memiliki member baru yang perlu diaktivasi',
+          member_uid: docId,
+        });
       } else {
         console.log('Failed to upload bukti pembayaran');
       }
