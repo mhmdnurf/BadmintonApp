@@ -5,7 +5,7 @@ const Waktu = () => {
   return (
     <>
       <View style={styles.timeContainer}>
-        <Text style={styles.timeText}>08.00 - 22.00</Text>
+        <Text style={styles.timeText}>Selamat Beraktivitas!</Text>
       </View>
     </>
   );

@@ -33,6 +33,7 @@ const Notifikasi = () => {
       const notifikasi = await firestore()
         .collection('notifikasi')
         .where('user_uid', '==', user.uid)
+        .orderBy('createdAt', 'desc')
         .get();
       const dataNotifikasi = notifikasi.docs.map(doc => doc.data());
       setData(dataNotifikasi);

@@ -330,7 +330,9 @@ const Pembayaran = ({route, navigation}: Pembayaran) => {
           onValueChange={onValueChange}
           dataMember={dataMember}
         />
-        <UploadButton onPress={uploadFile} uploadedFiles={buktiPembayaran} />
+        {selectedValue !== 'member' ? (
+          <UploadButton onPress={uploadFile} uploadedFiles={buktiPembayaran} />
+        ) : null}
         <ConfirmButton
           title="Konfirmasi Pembayaran"
           onPress={handleSubmit}

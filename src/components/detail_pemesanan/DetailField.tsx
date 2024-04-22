@@ -58,12 +58,16 @@ const DetailField = ({dataPemesanan, dataPembayaran, dataGOR}: DetailField) => {
           }
           editable={false}
         />
-        <Text style={styles.label}>Bukti Pembayaran</Text>
-        <Pressable
-          style={styles.btnContainer}
-          onPress={() => InAppBrowser.open(dataPembayaran.buktiPembayaran)}>
-          <Text style={styles.btnText}>Lihat Bukti Pembayaran</Text>
-        </Pressable>
+        {dataPembayaran?.metodePembayaran !== 'member' ? (
+          <>
+            <Text style={styles.label}>Bukti Pembayaran</Text>
+            <Pressable
+              style={styles.btnContainer}
+              onPress={() => InAppBrowser.open(dataPembayaran.buktiPembayaran)}>
+              <Text style={styles.btnText}>Lihat Bukti Pembayaran</Text>
+            </Pressable>
+          </>
+        ) : null}
       </View>
     </>
   );
