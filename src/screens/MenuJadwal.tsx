@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import DaftarGor from '../components/menu_jadwal/DaftarGor';
 import FlatContainer from '../components/FlatContainer';
 import firestore from '@react-native-firebase/firestore';
+import {useIsFocused} from '@react-navigation/native';
 
 interface MenuJadwal {
   navigation: any;
@@ -12,6 +13,7 @@ interface MenuJadwal {
 const MenuJadwal = ({navigation}: MenuJadwal) => {
   const [dataGOR, setDataGOR] = React.useState([] as any);
   const [refreshing, setRefreshing] = React.useState(false);
+  const isFocused = useIsFocused();
 
   const fetchGOR = React.useCallback(async () => {
     try {
@@ -41,8 +43,10 @@ const MenuJadwal = ({navigation}: MenuJadwal) => {
   };
 
   React.useEffect(() => {
-    fetchGOR();
-  }, [fetchGOR]);
+    if (isFocused) {
+      fetchGOR();
+    }
+  }, [fetchGOR, isFocused]);
 
   return (
     <>

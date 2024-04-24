@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   ActivityIndicator,
+  Alert,
   Dimensions,
   Pressable,
   StyleSheet,
@@ -22,11 +23,43 @@ interface PembayaranBerhasil {
 const EditProfile = ({navigation, route}: PembayaranBerhasil) => {
   const {data} = route.params;
   const [namaLengkap, setNamaLengkap] = React.useState(data?.namaLengkap);
+  const [NIK, setNIK] = React.useState(data?.NIK);
   const [nomor, setNomor] = React.useState(data?.nomor);
   const [isLoading, setIsLoading] = React.useState(false);
 
-  const handleEdit = () => {
+  const handleEdit = async () => {
     setIsLoading(true);
+    const nomorSnapshot = await firestore()
+      .collection('users')
+      .where('nomor', '==', nomor)
+      .get();
+    if (!nomorSnapshot.empty) {
+      // Check if the document with the same 'nomor' is the current user's document
+      const isCurrentUserDoc = nomorSnapshot.docs.some(
+        doc => doc.id === data?.user_uid,
+      );
+      if (!isCurrentUserDoc) {
+        Alert.alert('Error', 'Nomor telah terdaftar');
+        setIsLoading(false);
+        return;
+      }
+    }
+
+    const NIKSnapshot = await firestore()
+      .collection('users')
+      .where('NIK', '==', NIK)
+      .get();
+    if (!NIKSnapshot.empty) {
+      // Check if the document with the same 'NIK' is the current user's document
+      const isCurrentUserDoc = NIKSnapshot.docs.some(
+        doc => doc.id === data?.user_uid,
+      );
+      if (!isCurrentUserDoc) {
+        Alert.alert('Error', 'NIK telah terdaftar');
+        setIsLoading(false);
+        return;
+      }
+    }
     try {
       firestore().collection('users').doc(data?.user_uid).update({
         namaLengkap: namaLengkap,
@@ -47,19 +80,17 @@ const EditProfile = ({navigation, route}: PembayaranBerhasil) => {
           <ImageProfile uri={data?.fotoUser} />
           <View style={styles.fieldContainer}>
             <Text style={styles.label}>NIK</Text>
-            <InputField placeholder="NIK" editable={false} value={data?.NIK} />
+            <InputField
+              placeholder="NIK"
+              value={NIK}
+              onChangeText={text => setNIK(text)}
+            />
             <Text style={styles.label}>Nama Lengkap</Text>
             <InputField
               placeholder="Nama Lengkap"
               editable={true}
               value={namaLengkap}
               onChangeText={text => setNamaLengkap(text)}
-            />
-            <Text style={styles.label}>Email</Text>
-            <InputField
-              placeholder="Email"
-              editable={false}
-              value={data?.email}
             />
             <Text style={styles.label}>Nomor Telepon</Text>
             <InputField

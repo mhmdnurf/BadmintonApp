@@ -41,6 +41,15 @@ const Register = ({navigation}: Register) => {
       return;
     }
 
+    const nikSnapshot = await firestore()
+      .collection('users')
+      .where('NIK', '==', nik)
+      .get();
+    if (!nikSnapshot.empty) {
+      Alert.alert('Submit tidak dapat dilakukan', 'NIK sudah terdaftar');
+      return;
+    }
+
     const nomorSnapshot = await firestore()
       .collection('users')
       .where('nomor', '==', nomor)
@@ -68,6 +77,7 @@ const Register = ({navigation}: Register) => {
           'https://firebasestorage.googleapis.com/v0/b/badminton-app-dev.appspot.com/o/undraw_Drink_coffee_v3au.png?alt=media&token=e41995e8-a492-4178-89f8-d5a4eaae0103',
       });
       console.log('User account created & signed in!');
+      Alert.alert('Register berhasil', 'Silahkan login');
     } catch (error) {
       console.log(error);
     } finally {
