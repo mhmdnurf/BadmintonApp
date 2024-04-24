@@ -60,7 +60,16 @@ const PerbaruiField = ({data, dataUser, onPress}: PerbaruiField) => {
           editable={false}
         />
         <Text style={styles.label}>Upload Bukti Pembayaran</Text>
-        <Pressable style={styles.btnUpload} onPress={onPress}>
+        <Pressable
+          style={({pressed}) => [
+            {
+              backgroundColor: pressed ? 'gray' : '#AAC8A7',
+              borderWidth: pressed ? 3 : 0,
+              borderColor: '#8C9B8E',
+            },
+            styles.btnUpload,
+          ]}
+          onPress={onPress}>
           <Text style={styles.btnText}>Upload</Text>
         </Pressable>
       </View>

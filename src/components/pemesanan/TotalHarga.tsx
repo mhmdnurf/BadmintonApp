@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     fontFamily: 'Poppins SemiBold',
+    color: '#4F4F4F',
   },
   picker: {
     borderWidth: 3,

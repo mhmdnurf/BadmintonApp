@@ -12,6 +12,7 @@ interface RiwayatCard {
   status: string;
   waktuBooking: string;
   waktuAkhir: string;
+  kondisi: string;
 }
 
 const RiwayatCard = ({
@@ -22,6 +23,7 @@ const RiwayatCard = ({
   waktuAkhir,
   gor,
   status,
+  kondisi,
 }: RiwayatCard) => {
   return (
     <View style={styles.container}>
@@ -29,7 +31,7 @@ const RiwayatCard = ({
         <View style={styles.icon}>
           {status === 'pending' ? (
             <Icon name="tilde" size={30} color="#EEC759" />
-          ) : status === 'batal' ? (
+          ) : status === 'expired' || status === 'Ditolak' ? (
             <Icon name="text-box-remove-outline" size={30} color="#FF8080" />
           ) : (
             <Icon name="text-box-check-outline" size={30} color="#AAC8A7" />
@@ -48,13 +50,17 @@ const RiwayatCard = ({
           <View style={[styles.statusContainer, {backgroundColor: '#EEC759'}]}>
             <Text style={styles.statusText}>Menunggu Pembayaran</Text>
           </View>
-        ) : status === 'expired' ? (
+        ) : status === 'expired' && kondisi !== 'Ditolak' ? (
           <View style={[styles.statusContainer, {backgroundColor: '#FF8080'}]}>
             <Text style={styles.statusText}>Kadaluwarsa</Text>
           </View>
         ) : status === 'menunggu konfirmasi' ? (
           <View style={[styles.statusContainer, {backgroundColor: '#EEC759'}]}>
             <Text style={styles.statusText}>Sedang Diverifikasi</Text>
+          </View>
+        ) : kondisi === 'Ditolak' ? (
+          <View style={[styles.statusContainer, {backgroundColor: '#FF8080'}]}>
+            <Text style={styles.statusText}>Ditolak</Text>
           </View>
         ) : (
           <View style={styles.statusContainer}>

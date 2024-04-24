@@ -43,5 +43,6 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     fontFamily: 'Poppins SemiBold',
+    color: '#6F7789',
   },
 });

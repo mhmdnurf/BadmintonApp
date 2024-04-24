@@ -9,7 +9,16 @@ const ConfirmButton = ({onPress}: ConfirmButton) => {
   return (
     <>
       <View style={styles.container}>
-        <Pressable style={styles.button} onPress={onPress}>
+        <Pressable
+          style={({pressed}) => [
+            {
+              backgroundColor: pressed ? '#8C9B8E' : '#AAC8A7',
+              borderWidth: pressed ? 3 : 0,
+              borderColor: pressed ? '#8C9B8E' : '#AAC8A7',
+            },
+            styles.button,
+          ]}
+          onPress={onPress}>
           <Text style={styles.buttonText}>Perbarui Member</Text>
         </Pressable>
       </View>

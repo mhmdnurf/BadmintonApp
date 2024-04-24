@@ -49,7 +49,12 @@ const RegisterField = ({
         keyboardType="numeric"
       />
       <View style={styles.picker}>
-        <Picker selectedValue={selectedValue} onValueChange={onValueChange}>
+        <Picker
+          selectedValue={selectedValue}
+          onValueChange={onValueChange}
+          style={{
+            color: '#4F4F4F',
+          }}>
           <Picker.Item label="Jenis Kelamin" value="" />
           <Picker.Item label="Laki - Laki" value="Laki - Laki" />
           <Picker.Item label="Perempuan" value="Perempuan" />

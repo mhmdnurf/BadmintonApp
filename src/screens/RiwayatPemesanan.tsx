@@ -44,7 +44,7 @@ const RiwayatPemesanan = ({navigation}: RiwayatPemesanan) => {
 
   const handleNavigationById = (id: string) => () => {
     const data = dataRiwayat.find((item: any) => item.booking_uid === id);
-    if (data.status === 'expired') {
+    if (data.status === 'expired' && data.kondisi !== 'Ditolak') {
       Alert.alert(
         'Pemesanan telah kadaluarsa',
         'Silahkan lakukan pemesanan ulang',
@@ -53,6 +53,11 @@ const RiwayatPemesanan = ({navigation}: RiwayatPemesanan) => {
       navigation.navigate('Pembayaran', {
         id,
       });
+    } else if (data.kondisi === 'Ditolak') {
+      Alert.alert(
+        'Pemesanan ditolak',
+        'Silahkan lakukan pemesanan ulang atau hubungi pemilik GOR',
+      );
     } else {
       navigation.navigate('DetailPemesanan', {
         id,

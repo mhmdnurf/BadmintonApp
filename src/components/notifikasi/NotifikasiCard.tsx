@@ -31,7 +31,7 @@ export default NotifikasiCard;
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 10,
+    marginTop: 20,
     borderWidth: 1,
     borderColor: '#E5E5E5',
     padding: 20,
@@ -40,10 +40,12 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 16,
+    color: '#6F7789',
     fontFamily: 'Poppins SemiBold',
   },
   text: {
     fontSize: 14,
+    color: '#6F7789',
     fontFamily: 'Poppins Regular',
   },
   icon: {

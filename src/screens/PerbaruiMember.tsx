@@ -85,7 +85,11 @@ const PerbaruiMember = ({navigation, route}: PerbaruiMember) => {
   const handlePembayaranMember = async () => {
     setIsLoading(true);
     if (!buktiPembayaran) {
-      Alert.alert('Upload bukti pembayaran terlebih dahulu');
+      Alert.alert(
+        'Perbarui Member gagal',
+        'Upload bukti pembayaran terlebih dahulu',
+      );
+      setIsLoading(false);
       return;
     }
     try {
@@ -124,11 +128,11 @@ const PerbaruiMember = ({navigation, route}: PerbaruiMember) => {
           gor_uid: dataGOR.user_uid,
           user_uid: user?.uid,
           masaAktif: month,
-          kuota: 4,
           member_uid: docId,
           jumlahPembayaran: dataGOR.hargaMember,
           buktiPembayaran: buktiPembayaranURL,
           status: 'Menunggu Aktivasi',
+          namaLengkap: dataUser.namaLengkap,
         });
 
         const notifikasiRef = firestore().collection('notifikasi');

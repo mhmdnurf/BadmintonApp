@@ -29,7 +29,12 @@ const PemesananField = ({
         <InputField value={bookingValue} editable={false} />
         <Text style={styles.label}>Lama Bermain</Text>
         <View style={styles.picker}>
-          <Picker selectedValue={lamaBermain} onValueChange={onValueChange}>
+          <Picker
+            selectedValue={lamaBermain}
+            onValueChange={onValueChange}
+            style={{
+              color: '#4F4F4F',
+            }}>
             <Picker.Item label="2 Jam" value="2" />
             <Picker.Item label="4 Jam" value="4" />
             <Picker.Item label="6 Jam" value="6" />

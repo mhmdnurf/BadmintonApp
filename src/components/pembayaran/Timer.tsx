@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontFamily: 'Poppins Bold',
+    color: '#4F4F4F',
   },
   timer: {
     fontSize: 32,

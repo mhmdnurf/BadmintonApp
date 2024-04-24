@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   ActivityIndicator,
-  Dimensions,
   Pressable,
   StyleSheet,
   Text,
@@ -10,6 +9,7 @@ import {
 import RootContainer from '../components/RootContainer';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import firestore from '@react-native-firebase/firestore';
+import BottomSpace from '../components/BottomSpace';
 
 interface PembayaranBerhasil {
   navigation: any;
@@ -68,7 +68,7 @@ const PembayaranBerhasil = ({navigation, route}: PembayaranBerhasil) => {
                   {waktuBooking} - {waktuAkhir}
                 </Text>
                 <Text style={styles.label}>
-                  Rp. {jumlahPembayaran.toLocaleString()}
+                  Rp. {jumlahPembayaran?.toLocaleString()}
                 </Text>
                 <Text style={styles.label}>{tanggalPembayaran}</Text>
               </View>
@@ -94,6 +94,7 @@ const PembayaranBerhasil = ({navigation, route}: PembayaranBerhasil) => {
             </View>
           </View>
         )}
+        <BottomSpace marginBottom={200} />
       </RootContainer>
     </>
   );
@@ -103,28 +104,21 @@ export default PembayaranBerhasil;
 
 const styles = StyleSheet.create({
   container: {
-    display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    height: Dimensions.get('window').height,
-    marginVertical: 20,
+    marginTop: 40,
   },
   card: {
     width: '80%',
-    height: Dimensions.get('window').height,
     backgroundColor: 'white',
     borderRadius: 15,
     padding: 20,
-    elevation: 5,
-    shadowColor: 'black',
-    shadowOffset: {width: 0, height: 0},
-    shadowOpacity: 0.5,
   },
   title: {
     fontSize: 20,
     fontFamily: 'Poppins Bold',
     textAlign: 'center',
-    marginTop: 20,
+    marginTop: 40,
     color: 'gray',
   },
   icon: {
@@ -156,6 +150,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginHorizontal: 20,
     borderRadius: 10,
+    marginVertical: 20,
   },
   btnText: {
     fontSize: 16,

@@ -39,6 +39,7 @@ const InputField = ({
         editable={editable}
         maxLength={maxLength}
         keyboardType={keyboardType}
+        placeholderTextColor={'#4F4F4F'}
       />
     </>
   );

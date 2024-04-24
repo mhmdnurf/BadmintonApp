@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Alert, StyleSheet, Text, View} from 'react-native';
 import Header from '../components/Header';
 import RegisterField from '../components/register/RegisterField';
 import RegisterButton from '../components/register/RegisterButton';
@@ -27,6 +27,28 @@ const Register = ({navigation}: Register) => {
   };
 
   const handleSubmit = async () => {
+    if (!fullName || !nik || !email || !password || !selectedGender || !nomor) {
+      Alert.alert('Register gagal', 'Semua field harus diisi');
+      return;
+    }
+
+    const emailSnapshot = await firestore()
+      .collection('users')
+      .where('email', '==', email)
+      .get();
+    if (!emailSnapshot.empty) {
+      Alert.alert('Submit tidak dapat dilakukan', 'Email sudah terdaftar');
+      return;
+    }
+
+    const nomorSnapshot = await firestore()
+      .collection('users')
+      .where('nomor', '==', nomor)
+      .get();
+    if (!nomorSnapshot.empty) {
+      Alert.alert('Submit tidak dapat dilakukan', 'Nomor HP sudah terdaftar');
+      return;
+    }
     try {
       setIsLoading(true);
       const userCredential = await auth().createUserWithEmailAndPassword(

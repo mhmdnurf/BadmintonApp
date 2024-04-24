@@ -9,6 +9,7 @@ interface RiwayatData {
   lokasi: string;
   waktuBooking: string;
   status: string;
+  kondisi: string;
   waktuAkhir: string;
 }
 
@@ -45,6 +46,7 @@ const ListRiwayat = ({data, refreshing, onRefresh, onPress}: ListRiwayat) => {
               status={item.status}
               waktuBooking={item.waktuBooking}
               waktuAkhir={item.waktuAkhir}
+              kondisi={item.kondisi}
             />
           </Pressable>
         )}

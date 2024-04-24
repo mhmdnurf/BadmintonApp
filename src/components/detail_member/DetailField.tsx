@@ -47,5 +47,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Poppins SemiBold',
     marginBottom: 5,
+    color: '#6F7789',
   },
 });

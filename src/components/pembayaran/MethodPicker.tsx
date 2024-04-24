@@ -21,7 +21,10 @@ const MethodPicker = ({
             <>
               <Picker
                 selectedValue={selectedValue}
-                onValueChange={onValueChange}>
+                onValueChange={onValueChange}
+                style={{
+                  color: '#4F4F4F',
+                }}>
                 <Picker.Item label="Transfer" value="transfer" />
                 <Picker.Item
                   label={`Member (${dataMember.kuota} Kuota)`}
@@ -47,6 +50,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 10,
+    color: '#4F4F4F',
   },
   picker: {
     borderWidth: 3,
