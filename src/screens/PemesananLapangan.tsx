@@ -16,14 +16,14 @@ interface PemesananLapangan {
 const PemesananLapangan = ({route, navigation}: PemesananLapangan) => {
   const {waktuBooking, tanggalPemesanan, dataLapangan, lapangan} = route.params;
 
-  const [lamaBermain, setLamaBermain] = React.useState('2 Jam');
+  const [lamaBermain, setLamaBermain] = React.useState('1 Jam');
   const [isLoading, setIsLoading] = React.useState(false);
 
   const lapanganNumber = lapangan.split(' ')[1];
 
   const timeNumber = parseInt(lamaBermain.split(' ')[0], 10);
 
-  const harga = (timeNumber * dataLapangan.hargaLapangan) / 2;
+  const harga = timeNumber * dataLapangan.hargaLapangan;
 
   const generateTimes = (): string[] => {
     const startHour = parseInt(waktuBooking.split('.')[0], 10);
@@ -67,7 +67,7 @@ const PemesananLapangan = ({route, navigation}: PemesananLapangan) => {
                 lokasi: dataLapangan.namaGOR,
                 status: 'pending',
                 waktuMulai: waktuBooking,
-                waktuAkhir: waktu[2],
+                waktuAkhir: waktu[waktu.length - 1],
                 booking_uid: bookingRef.id,
                 harga: harga,
                 expiredAt: firestore.Timestamp.fromDate(

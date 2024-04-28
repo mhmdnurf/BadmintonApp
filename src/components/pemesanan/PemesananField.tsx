@@ -35,10 +35,14 @@ const PemesananField = ({
             style={{
               color: '#4F4F4F',
             }}>
-            <Picker.Item label="2 Jam" value="2" />
-            <Picker.Item label="4 Jam" value="4" />
-            <Picker.Item label="6 Jam" value="6" />
-            <Picker.Item label="8 Jam" value="8" />
+            <Picker.Item label="1 Jam" value="1 Jam" />
+            <Picker.Item label="2 Jam" value="2 Jam" />
+            <Picker.Item label="3 Jam" value="3 Jam" />
+            <Picker.Item label="4 Jam" value="4 Jam" />
+            <Picker.Item label="5 Jam" value="5 Jam" />
+            <Picker.Item label="6 Jam" value="6 Jam" />
+            <Picker.Item label="7 Jam" value="7 Jam" />
+            <Picker.Item label="8 Jam" value="8 Jam" />
           </Picker>
         </View>
         <Text style={styles.label}>Lapangan</Text>
